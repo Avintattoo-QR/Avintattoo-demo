@@ -3,506 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVIN | Art of Ink</title>
-    <!-- פונטים מיוחדים -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Assistant:wght@200;400;600&display=swap" rel="stylesheet">
+    <title>PUMBA | Digital Empire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #0a0a0a;
-            --text: #e0e0e0;
-            --accent: #a12626; /* אדום דם */
-            --gold: #d4af37;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --primary: #ff6b00; /* Jeton Orange */
+            --primary-hover: #e65100;
+            --dark-bg: #0a0a0a;
+            --card-bg: #141414;
+            --text: #ffffff;
+            --text-muted: #a1a1a1;
+            --border: #2a2a2a;
+            --radius: 24px;
         }
 
         * {
             box-sizing: border-box;
-            cursor: none; /* ביטול סמן העכבר הרגיל */
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
+            background-color: var(--dark-bg);
             color: var(--text);
-            font-family: 'Assistant', sans-serif;
+            font-family: 'Inter', 'Heebo', sans-serif;
             overflow-x: hidden;
+            line-height: 1.5;
         }
 
-        /* --- אפקט רעש קולנועי (Noise Texture) --- */
-        .noise {
+        /* --- Navbar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 9999;
+            top: 0; left: 0; right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* --- סמן עכבר מותאם אישית --- */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 1px solid white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor.hovered {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border-color: transparent;
-            opacity: 0.5;
-        }
-
-        /* --- טיפוגרפיה --- */
-        h1, h2, h3 {
-            font-family: 'Cinzel', serif;
-            text-transform: uppercase;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin: 0;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh;
-            width: 100%;
-            position: relative;
+        .logo {
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+            color: white;
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .video-bg {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            z-index: -1;
-            filter: grayscale(100%) contrast(1.2) brightness(0.4);
-            transition: filter 0.5s;
-        }
+        .logo span { color: var(--primary); }
 
-        .hero:hover .video-bg {
-            filter: grayscale(0%) contrast(1.1) brightness(0.6);
-        }
-
-        /* וידאו רספונסיבי */
-        .desktop-v { display: block; }
-        .mobile-v { display: none; }
-        @media (max-width: 768px) {
-            .desktop-v { display: none; }
-            .mobile-v { display: block; }
-        }
-
-        .hero-content {
-            z-index: 2;
-            text-align: center;
-            mix-blend-mode: overlay;
-        }
-
-        .hero h1 {
-            font-size: 6rem;
-            line-height: 0.9;
-            opacity: 0;
-            animation: slideUp 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.5s;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            margin-top: 20px;
-            opacity: 0;
-            animation: slideUp 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.8s;
-        }
-
-        /* --- NAVIGATION --- */
-        .floating-nav {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
+        .nav-links {
             display: flex;
-            gap: 20px;
-            z-index: 10;
-            width: 90%;
-            justify-content: center;
-            flex-wrap: wrap;
+            gap: 30px;
         }
 
-        .nav-btn {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
+        .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: white; }
+
+        .nav-cta {
+            background: white;
+            color: black;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-cta:hover { transform: scale(1.05); }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 160px 40px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-text {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            line-height: 1;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        h1 span {
+            color: var(--primary);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 90%;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: black;
+        }
+
+        /* --- Hero Visual (The "Phone" / "Wallet" Look) --- */
+        .hero-visual {
+            position: relative;
+            width: 500px;
+            height: 600px;
+            perspective: 1000px;
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 600px;
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            border-radius: 40px;
+            border: 8px solid #333;
+            position: absolute;
+            right: 0;
+            transform: rotateY(-20deg) rotateX(10deg);
+            box-shadow: -20px 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .screen-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .balance-card {
+            background: var(--primary);
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .transaction {
+            background: #222;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.9rem;
-            transition: 0.4s;
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
 
-        .nav-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(161, 38, 38, 0.3);
+        .floating-card {
+            position: absolute;
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: float 8s ease-in-out infinite reverse;
         }
 
-        /* --- SECTIONS --- */
-        .section {
-            padding: 120px 20px;
-            position: relative;
+        .fc-1 { top: 100px; left: -50px; width: 200px; }
+        .fc-2 { bottom: 100px; left: -20px; width: 180px; }
+
+        @keyframes float {
+            0%, 100% { transform: rotateY(-20deg) rotateX(10deg) translateY(0); }
+            50% { transform: rotateY(-20deg) rotateX(10deg) translateY(-20px); }
         }
 
-        .section-title {
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 80px;
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+        /* --- Ticker (Infinite Scroll) --- */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 2px;
-            background: var(--gold);
-            margin: 20px auto 0;
+        .ticker {
+            display: flex;
+            width: fit-content;
+            animation: ticker 20s linear infinite;
         }
 
-        /* --- SHOP GRID (Holographic Cards) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+        .ticker-item {
+            color: #555;
+            font-size: 1.5rem;
+            font-weight: 900;
+            padding: 0 50px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); } /* RTL direction */
+        }
+
+        /* --- Features Section (Cards) --- */
+        .features {
+            padding: 100px 40px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 { font-size: 3rem; margin-bottom: 10px; }
+        .section-header p { color: var(--text-muted); }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
         .card {
-            background: var(--glass);
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 20px;
+            border-radius: var(--radius);
+            padding: 40px;
+            transition: 0.3s;
             position: relative;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow: hidden;
         }
 
         .card:hover {
-            border-color: var(--gold);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            background: rgba(20, 20, 20, 0.8);
+            transform: translateY(-10px);
+            border-color: var(--primary);
         }
 
-        .card-img-box {
-            height: 350px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.7s;
-            filter: grayscale(30%);
-        }
-
-        .card:hover img {
-            transform: scale(1.1);
-            filter: grayscale(0%);
-        }
-
-        .card h3 {
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .card p {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-        .card-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-
-        .card-btn:hover {
-            background: var(--gold);
-            color: black;
-            border-color: var(--gold);
-        }
-
-        /* --- CONTACT --- */
-        .contact-box {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid var(--border);
-            padding: 60px;
-            background: linear-gradient(145deg, rgba(20,20,20,1) 0%, rgba(10,10,10,1) 100%);
-            position: relative;
-        }
-
-        /* קווים דקורטיביים */
-        .contact-box::before, .contact-box::after {
-            content: '';
-            position: absolute;
-            width: 20px; height: 20px;
-            border: 1px solid var(--gold);
-            transition: 0.5s;
-        }
-        .contact-box::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-        .contact-box::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
-
-        .contact-box:hover::before, .contact-box:hover::after {
-            width: 100%; height: 100%;
-        }
-
-        input, textarea {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: white;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            font-family: 'Assistant', sans-serif;
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-bottom-color: var(--accent);
-        }
-
-        .send-btn {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--text);
-            padding: 15px 50px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .send-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        /* --- FOOTER & MAP --- */
-        .map-wrap {
-            height: 400px;
-            filter: grayscale(100%) invert(92%);
-            transition: 0.5s;
-        }
-        .map-wrap:hover { filter: grayscale(0%); }
-        iframe { width: 100%; height: 100%; border: 0; }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            border-top: 1px solid #222;
-            color: #555;
-            font-size: 0.8rem;
-        }
-
-        /* --- Whatsapp Float --- */
-        .wa-float {
-            position: fixed;
-            bottom: 30px; right: 30px;
-            width: 60px; height: 60px;
-            background: #25d366;
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 107, 0, 0.1);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 100;
-            box-shadow: 0 0 30px rgba(37, 211, 102, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .card p { color: var(--text-muted); line-height: 1.6; }
+
+        /* --- Big CTA Section --- */
+        .big-cta {
+            margin: 100px 40px;
+            background: linear-gradient(135deg, var(--primary), #ff9100);
+            border-radius: var(--radius);
+            padding: 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .big-cta h2 { font-size: 3.5rem; margin-bottom: 20px; color: black; }
+        .big-cta p { font-size: 1.2rem; color: rgba(0,0,0,0.7); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .btn-black {
+            background: black;
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
             transition: 0.3s;
         }
-        .wa-float:hover { transform: scale(1.1); }
-        .wa-float svg { width: 30px; height: 30px; fill: white; }
+        
+        .btn-black:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-        /* Animation Keyframes */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
-        }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* Mobile Adjustments */
+        /* Mobile */
         @media (max-width: 768px) {
-            .cursor { display: none; }
-            * { cursor: auto; }
-            .hero h1 { font-size: 3rem; }
-            .contact-box { padding: 30px; }
-            .nav-btn { padding: 10px 20px; font-size: 0.8rem; }
+            .hero { flex-direction: column; padding-top: 120px; text-align: center; }
+            .hero-text { margin-bottom: 60px; }
+            .hero-visual { width: 100%; height: 400px; display: flex; justify-content: center; }
+            .phone-mockup { transform: rotateY(0) rotateX(0); right: auto; }
+            .floating-card { display: none; }
+            h1 { font-size: 3rem; }
+            .nav-links { display: none; }
+            .cta-group { justify-content: center; }
         }
 
     </style>
 </head>
 <body>
 
-    <!-- שכבת רעש -->
-    <div class="noise"></div>
-    
-    <!-- סמן עכבר -->
-    <div class="cursor" id="cursor"></div>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <span>🐗</span> PUMBA
+        </div>
+        <div class="nav-links">
+            <a href="#">פתרונות</a>
+            <a href="#">אודות טלי</a>
+            <a href="#">סיפורי הצלחה</a>
+            <a href="#">תמחור</a>
+        </div>
+        <a href="https://wa.me/972528226689" class="nav-cta">התחל עכשיו</a>
+    </nav>
 
-    <!-- HERO -->
-    <header class="hero">
-        <video class="video-bg desktop-v" autoplay muted loop playsinline>
-            <source src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/vid-20251208-wa0052.mp4" type="video/mp4">
-        </video>
-        <video class="video-bg mobile-v" autoplay muted loop playsinline>
-            <source src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/vid-20251208-wa0039.mp4" type="video/mp4">
-        </video>
-
-        <div class="hero-content">
-            <h1>AVIN INK</h1>
-            <p>NOT JUST A TATTOO. A LEGACY.</p>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>בנה את האימפריה<br><span>הדיגיטלית שלך.</span></h1>
+            <p class="subtitle">מספיק לעבוד בשביל האריות. הפלטפורמה המקיפה לבניית נכסים דיגיטליים, שיווק ומכירות - הכל במקום אחד.</p>
+            <div class="cta-group">
+                <a href="#contact" class="btn-primary">הצטרף למהפכה</a>
+                <a href="#demo" class="btn-secondary">איך זה עובד?</a>
+            </div>
         </div>
 
-        <div class="floating-nav">
-            <a href="#shop" class="nav-btn magnet">BOUTIQUE</a>
-            <a href="https://avintattoo.com/63-2/#tattoos-gallery" class="nav-btn magnet">GALLERY</a>
-            <a href="#contact" class="nav-btn magnet">BOOKING</a>
-        </div>
-    </header>
-
-    <!-- SHOP -->
-    <section id="shop" class="section">
-        <h2 class="section-title reveal">THE COLLECTION</h2>
-        
-        <div class="grid">
-            <!-- Product 1 -->
-            <div class="card reveal">
-                <div class="card-img-box">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1052-d79cd795d798d795d7a1-d7a7d798d79f-d7a2d79d-d7a9d7a8d7a9d7a8d7aa-d7a6d791d7a2-d7a6d799d7a4d795d799-d796d794d791.jpg" alt="Jewelry">
+        <div class="hero-visual">
+            <!-- מדמה את הטלפון מאתר Jeton -->
+            <div class="phone-mockup">
+                <div class="screen-header">
+                    <span>Pumba App</span>
+                    <span>📶</span>
                 </div>
-                <h3>LOTUS STONE</h3>
-                <p>GOLD PLATED | SKU: 1052</p>
-                <a href="https://api.whatsapp.com/send?phone=9720537239660&text=I'm interested in SKU 1052" class="card-btn magnet">PURCHASE</a>
+                <div class="balance-card">
+                    <small>הכנסות החודש</small>
+                    <div style="font-size: 2rem; font-weight: bold;">₪45,230</div>
+                </div>
+                <div class="transaction">
+                    <span>לקוח חדש (דף נחיתה)</span>
+                    <span style="color: #4caf50;">+₪2,500</span>
+                </div>
+                <div class="transaction">
+                    <span>קמפיין גוגל</span>
+                    <span style="color: #4caf50;">+₪1,200</span>
+                </div>
+                <div class="transaction">
+                    <span>ייעוץ עסקי</span>
+                    <span style="color: #4caf50;">+₪800</span>
+                </div>
+                <div class="transaction" style="margin-top: auto; background: #333; text-align: center; color: var(--primary);">
+                    ניהול מלא מהנייד
+                </div>
             </div>
 
-            <!-- Product 2 -->
-            <div class="card reveal">
-                <div class="card-img-box">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1023-d79cd791d7a8d798-d796d7a8d799d7a7d795d79f-d7a7d798d79f-d798d799d798d7a0d799d795d79d.jpg?w=1024" alt="Jewelry">
-                </div>
-                <h3>LABRET ZIRCON</h3>
-                <p>TITANIUM | SKU: 1023</p>
-                <a href="https://api.whatsapp.com/send?phone=9720537239660&text=I'm interested in SKU 1023" class="card-btn magnet">PURCHASE</a>
+            <!-- כרטיסים צפים -->
+            <div class="floating-card fc-1">
+                <div style="color: var(--text-muted); font-size: 0.8rem;">צמיחה שנתית</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #4caf50;">▲ 124%</div>
             </div>
-
-            <!-- Product 3 -->
-            <div class="card reveal">
-                <div class="card-img-box">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1071-d7a4d7a8d797-d791d7a8d7a7d799d796d795d7aa-d7a6d799d7a4d795d799-d796d794d791.jpg" alt="Jewelry">
-                </div>
-                <h3>FLOWER MARQUISE</h3>
-                <p>GOLD PLATED | SKU: 1071</p>
-                <a href="https://api.whatsapp.com/send?phone=9720537239660&text=I'm interested in SKU 1071" class="card-btn magnet">PURCHASE</a>
+            <div class="floating-card fc-2">
+                <div style="color: var(--text-muted); font-size: 0.8rem;">לקוחות פעילים</div>
+                <div style="font-size: 1.5rem; font-weight: bold;">850+</div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-        <h2 class="section-title reveal">START YOUR JOURNEY</h2>
-        
-        <div class="contact-box reveal">
-            <form onsubmit="alert('Sent!'); return false;">
-                <input type="text" placeholder="FULL NAME" class="magnet">
-                <input type="tel" placeholder="PHONE NUMBER" class="magnet">
-                <textarea rows="4" placeholder="TELL US ABOUT YOUR IDEA..." class="magnet"></textarea>
-                <button type="submit" class="send-btn magnet">SEND REQUEST</button>
-            </form>
+    <!-- Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">GOOGLE ADS</div>
+            <div class="ticker-item">WORDPRESS</div>
+            <div class="ticker-item">SHOPIFY</div>
+            <div class="ticker-item">TIKTOK</div>
+            <div class="ticker-item">SEO MASTERY</div>
+            <div class="ticker-item">AI AUTOMATION</div>
+            <div class="ticker-item">GOOGLE ADS</div>
+            <div class="ticker-item">WORDPRESS</div>
+            <div class="ticker-item">SHOPIFY</div>
+            <div class="ticker-item">TIKTOK</div>
         </div>
-    </section>
-
-    <!-- MAP -->
-    <div class="map-wrap">
-        <iframe src="https://maps.google.com/maps?q=32.102309,35.168467&z=16&output=embed"></iframe>
     </div>
 
-    <footer>
-        &copy; 2025 AVIN TATTOO STUDIO. ALL RIGHTS RESERVED.
-    </footer>
+    <!-- Features -->
+    <section class="features">
+        <div class="section-header">
+            <h2>למה לבחור בפומבה?</h2>
+            <p>אנחנו לא עוד סוכנות. אנחנו השותפים שלך לחופש.</p>
+        </div>
 
-    <a href="https://api.whatsapp.com/send?phone=9720537239660" class="wa-float magnet">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382C17.112 14.202 15.344 13.332 15.013 13.264C14.682 13.196 14.441 13.332 14.201 13.692C13.961 14.052 13.271 14.862 13.06 15.102C12.85 15.342 12.64 15.372 12.28 15.192C11.92 15.012 10.759 14.632 9.38299 13.407C8.30799 12.449 7.58199 11.267 7.37199 10.907C7.16199 10.547 7.34999 10.352 7.52999 10.172C7.68999 10.012 7.88999 9.752 8.06999 9.542C8.24999 9.332 8.30999 9.182 8.42999 8.942C8.54999 8.702 8.48999 8.492 8.39999 8.312C8.30999 8.132 7.58999 6.362 7.28999 5.642C6.99999 4.941 6.69999 5.042 6.47999 5.042C6.26999 5.042 6.02999 5.042 5.78999 5.042C5.54999 5.042 5.15999 5.132 4.82999 5.492C4.49999 5.852 3.56999 6.722 3.56999 8.492C3.56999 10.262 4.85999 11.972 5.03999 12.212C5.21999 12.452 7.54999 15.932 11.11 17.472C14.67 19.012 14.67 18.682 15.27 18.622C15.87 18.562 17.201 17.842 17.471 17.062C17.741 16.282 17.741 15.622 17.661 15.492C17.581 15.362 17.351 15.282 16.991 15.102H17.472V14.382Z"/></svg>
-    </a>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="icon-box">🚀</div>
+                <h3>מהירות של יבלת</h3>
+                <p>אנחנו בונים אתרים וקמפיינים במהירות שיא. הזמן שלך שווה כסף, ואנחנו לא מבזבזים אותו על בירוקרטיה.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🛡️</div>
+                <h3>בלי דאגות (Hakuna)</h3>
+                <p>מערכת אבטחה וגיבוי מלאה לכל הנכסים שלך. אתם יכולים לישון בשקט בלילה, העסק עובד בשבילכם.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">💎</div>
+                <h3>איכות פרימיום</h3>
+                <p>עיצוב ברמה בינלאומית, בדיוק כמו האתר שאתם רואים עכשיו. אנחנו לא מתפשרים על פיקסל אחד.</p>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        // --- 1. Custom Cursor Logic ---
-        const cursor = document.getElementById('cursor');
-        const magnets = document.querySelectorAll('.magnet');
+    <!-- Big CTA -->
+    <section class="big-cta">
+        <h2>מוכנים לשבור את הכלוב?</h2>
+        <p>הצטרפו לטלי ופומבה, ועוד מאות בעלי עסקים שכבר עשו את המעבר לעצמאות דיגיטלית מלאה.</p>
+        <a href="https://wa.me/972528226689" class="btn-black">פתח חשבון עסקי עכשיו</a>
+    </section>
 
-        // תזוזת סמן
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // אפקט מגנטי לכפתורים
-        magnets.forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                cursor.classList.add('hovered');
-            });
-            btn.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hovered');
-            });
-        });
-
-        // --- 2. Scroll Reveal Animation ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach((el) => {
-            observer.observe(el);
-        });
-    </script>
 </body>
 </html>
