@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PUMBA | Z-SCROLL V2</title>
+    <title>PUMBA | SUPERNOVA Z-SCROLL</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Heebo:wght@300;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #050505;
+            --bg: #020205;
             --primary: #ff6b00; /* Pumba Orange */
             --secondary: #00f2ff; /* Cyan */
+            --accent: #ff0055;
             --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,17 +23,28 @@
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Heebo', sans-serif;
-            overflow: hidden; /* אנחנו מנהלים את הגלילה */
+            overflow: hidden;
             height: 100vh;
             width: 100vw;
-            perspective: 1000px; /* עומק המצלמה */
+            perspective: 1200px;
         }
 
-        /* --- כוכבים --- */
+        /* --- רקע ואפקטים --- */
         #starfield {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
+            background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%);
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.3;
         }
 
         /* --- העולם התלת מימדי --- */
@@ -39,325 +53,343 @@
             width: 100%; height: 100%;
             transform-style: preserve-3d;
             will-change: transform;
+            transition: transform 0.1s ease-out; /* לתנועת העכבר */
         }
 
-        /* --- הסקשנים --- */
         .stage {
             position: absolute;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%); /* מרכוז */
-            width: 80%; max-width: 800px;
+            transform: translate(-50%, -50%);
+            width: 85%; max-width: 900px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            /* הסתרת הצד האחורי כדי למנוע ריצודים */
-            backface-visibility: hidden; 
+            backface-visibility: hidden;
         }
 
+        /* --- טיפוגרפיה --- */
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 1;
+            font-size: clamp(2.5rem, 10vw, 7rem);
+            line-height: 0.9;
             text-transform: uppercase;
             color: transparent;
-            -webkit-text-stroke: 2px rgba(255,255,255,0.8);
-            margin-bottom: 20px;
-            text-shadow: 0 0 30px rgba(255,255,255,0.1);
+            -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+            margin-bottom: 25px;
+            letter-spacing: 5px;
         }
 
-        .filled {
-            color: var(--primary);
+        .glow-text {
+            color: var(--text);
             -webkit-text-stroke: 0;
-            text-shadow: 0 0 40px var(--primary);
+            text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px var(--primary);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
+            max-width: 700px;
         }
 
         p {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            line-height: 1.6;
-            background: rgba(0,0,0,0.6);
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
+        /* --- כפתורים --- */
         .cta-btn {
-            margin-top: 40px;
-            padding: 20px 50px;
-            font-size: 1.5rem;
-            font-weight: bold;
+            margin-top: 50px;
+            padding: 22px 60px;
+            font-family: 'Orbitron';
+            font-size: 1.2rem;
+            font-weight: 900;
             background: var(--primary);
             color: white;
             text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
-            transition: 0.3s;
-            cursor: pointer; /* כדי שיהיה לחיץ */
-            pointer-events: auto; /* וודא שהכפתור מקבל לחיצות */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+            border: none;
+            position: relative;
+            overflow: hidden;
         }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .cta-btn:hover::before { left: 100%; }
 
         .cta-btn:hover {
-            transform: scale(1.1);
-            background: white;
-            color: black;
+            transform: scale(1.05) translateY(-5px);
+            background: var(--text);
+            color: var(--bg);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- ממשק משתמש (HUD) --- */
-        .hud {
+        /* --- HUD --- */
+        .hud-v3 {
             position: fixed;
-            bottom: 30px; left: 30px;
+            bottom: 40px; left: 40px;
             z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 15px;
             font-family: 'Orbitron';
+        }
+
+        .depth-counter {
+            font-size: 10px;
+            letter-spacing: 2px;
             color: var(--secondary);
+            margin-bottom: 8px;
+            display: block;
         }
 
-        .progress-container {
-            width: 200px; height: 4px;
+        .bar-container {
+            width: 250px; height: 2px;
             background: rgba(255,255,255,0.1);
-            border-radius: 2px;
+            position: relative;
         }
 
-        .progress-bar {
+        .bar-fill {
             height: 100%;
             background: var(--secondary);
             width: 0%;
-            box-shadow: 0 0 10px var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+            transition: width 0.1s ease-out;
         }
 
-        /* --- כפתורי ניווט ידניים --- */
-        .nav-buttons {
+        /* --- NAVIGATION --- */
+        .nav-sidebar {
             position: fixed;
-            right: 30px; top: 50%;
+            right: 40px; top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 30px;
             z-index: 100;
         }
 
-        .nav-btn {
-            width: 50px; height: 50px;
+        .dot {
+            width: 8px; height: 8px;
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
+            transition: 0.4s;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
-            transition: 0.3s;
         }
 
-        .nav-btn:hover {
+        .dot.active {
             background: var(--primary);
-            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            transform: scale(2);
         }
 
     </style>
 </head>
 <body>
 
+    <div class="scanlines"></div>
     <canvas id="starfield"></canvas>
 
     <div class="world" id="world">
-        <!-- אלמנטים מפוזרים בעומק (Z) -->
-        
-        <!-- Z = 0 -->
+        <!-- Section 1 -->
         <div class="stage" data-z="0">
-            <h1>WELCOME TO<br><span class="filled">THE FUTURE</span></h1>
-            <p>האתר הזה בנוי בציר העומק (Z-Axis). גלול למטה או השתמש בחצים כדי להיכנס פנימה.</p>
+            <h1>BEYOND<br><span class="glow-text">LIMITS</span></h1>
+            <div class="glass-card">
+                <p>ברוכים הבאים לדור הבא של הנדסת נכסים דיגיטליים. אנחנו לא רק בונים אתרים, אנחנו בונים חוויות שחודרות את המסך.</p>
+            </div>
         </div>
 
-        <!-- Z = -3000 -->
-        <div class="stage" data-z="-3000">
-            <h1>FULL<br><span style="color:var(--secondary); -webkit-text-stroke:0;">CONTROL</span></h1>
-            <p>עכשיו יש לך שליטה מלאה. אפשר ללכת קדימה, ואפשר לחזור אחורה. שום דבר לא הולך לאיבוד בחלל.</p>
+        <!-- Section 2 -->
+        <div class="stage" data-z="-4000">
+            <h1>HYPER<br><span style="color:var(--secondary); -webkit-text-stroke:0; text-shadow: 0 0 30px var(--secondary);">GROWTH</span></h1>
+            <div class="glass-card">
+                <p>הטכנולוגיה שלנו מאפשרת לעסק שלך לצמוח במהירות האור. אוטומציה חכמה שחוסכת לך זמן יקר ומייצרת רווחים בזמן שאתה ישן.</p>
+            </div>
         </div>
 
-        <!-- Z = -6000 -->
-        <div class="stage" data-z="-6000">
-            <h1>DIGITAL<br>ASSETS</h1>
-            <p>אנחנו בונים נכסים דיגיטליים שעובדים בשבילך 24/7. אוטומציה, שיווק וטכנולוגיה מתקדמת.</p>
+        <!-- Section 3 -->
+        <div class="stage" data-z="-8000">
+            <h1>INFINITE<br>POSSIBILITIES</h1>
+            <div class="glass-card">
+                <p>כל שורת קוד נכתבת במטרה אחת: להפוך את החזון שלך למציאות מוחשית. מעיצוב עוצר נשימה ועד למערכות מורכבות.</p>
+            </div>
         </div>
 
-        <!-- Z = -9000 -->
-        <div class="stage" data-z="-9000">
-            <h1 class="filled">START NOW</h1>
-            <p>המסע שלך לעצמאות כלכלית מתחיל בהחלטה אחת.</p>
-            <a href="https://wa.me/972528226689" class="cta-btn">דבר עם פומבה</a>
+        <!-- Section 4 -->
+        <div class="stage" data-z="-12000">
+            <h1 class="glow-text">LAUNCH</h1>
+            <div class="glass-card">
+                <p>העתיד לא מחכה לאף אחד. האם אתה מוכן להמריא?</p>
+                <a href="https://wa.me/972528226689" class="cta-btn">צרו קשר עכשיו</a>
+            </div>
         </div>
-
     </div>
 
-    <!-- ממשק שליטה -->
-    <div class="nav-buttons">
-        <button class="nav-btn" onclick="move(-1)">▲</button> <!-- אחורה -->
-        <button class="nav-btn" onclick="move(1)">▼</button> <!-- קדימה -->
+    <!-- HUD -->
+    <div class="hud-v3">
+        <span class="depth-counter" id="depth-txt">COORDINATES: 0,0,0</span>
+        <div class="bar-container"><div class="bar-fill" id="bar"></div></div>
     </div>
 
-    <div class="hud">
-        <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
-        <div id="depth">DEPTH: 0</div>
+    <!-- SIDEBAR NAV -->
+    <div class="nav-sidebar" id="sidebar">
+        <div class="dot active" onclick="jumpTo(0)"></div>
+        <div class="dot" onclick="jumpTo(4000)"></div>
+        <div class="dot" onclick="jumpTo(8000)"></div>
+        <div class="dot" onclick="jumpTo(12000)"></div>
     </div>
 
     <script>
-        // --- הגדרות ---
-        const Z_SPACING = 3000; // מרחק בין שקופיות
+        const Z_SPACING = 4000;
         const stages = document.querySelectorAll('.stage');
-        const maxScroll = (stages.length - 1) * Z_SPACING; // גבול תחתון
+        const world = document.getElementById('world');
+        const dots = document.querySelectorAll('.dot');
+        const maxScroll = (stages.length - 1) * Z_SPACING;
         
-        let currentZ = 0; // המיקום הנוכחי בפועל (עם החלקה)
-        let targetZ = 0;  // היעד שאליו אנחנו רוצים להגיע
-        let speed = 0;    // מהירות לתצוגת כוכבים
+        let currentZ = 0;
+        let targetZ = 0;
+        let mouseX = 0, mouseY = 0;
 
-        // --- ניהול גלילה (גלגלת + מגע + מקלדת) ---
-        
-        // 1. גלגלת עכבר
-        window.addEventListener('wheel', (e) => {
-            targetZ += e.deltaY * 2.5; // רגישות גלילה
-            clampScroll();
+        // --- ניהול גלילה ---
+        window.addEventListener('wheel', e => {
+            targetZ += e.deltaY * 3;
+            clamp();
         });
 
-        // 2. מגע בטלפון (Swipe)
-        let touchStart = 0;
-        window.addEventListener('touchstart', e => touchStart = e.touches[0].clientY);
+        // מגע
+        let startY = 0;
+        window.addEventListener('touchstart', e => startY = e.touches[0].clientY);
         window.addEventListener('touchmove', e => {
-            let touchDiff = touchStart - e.touches[0].clientY;
-            targetZ += touchDiff * 4; // רגישות מגע
-            touchStart = e.touches[0].clientY;
-            clampScroll();
+            const delta = startY - e.touches[0].clientY;
+            targetZ += delta * 5;
+            startY = e.touches[0].clientY;
+            clamp();
         });
 
-        // 3. מקלדת
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown') move(1);
-            if (e.key === 'ArrowUp') move(-1);
+        // עכבר פרלקסה
+        window.addEventListener('mousemove', e => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 15; // הטיה של 15 מעלות
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 15;
         });
 
-        // פונקציית עזר לכפתורים וחצים
-        function move(direction) {
-            targetZ += direction * 1500; // קפיצה גדולה
-            clampScroll();
-        }
-
-        // פונקציה שמונעת יציאה מהגבולות
-        function clampScroll() {
-            // לא נותן לרדת מתחת לאפס (התחלה)
-            // ולא נותן לעבור את הסוף ב-1000 פיקסלים (כדי שלא יהיה מסך שחור לנצח)
+        function clamp() {
             targetZ = Math.max(0, Math.min(targetZ, maxScroll + 500));
         }
 
-        // --- לולאת האנימציה (The Engine) ---
-        function animate() {
-            // נוסחת Lerp לתנועה חלקה: המיקום הנוכחי רודף אחרי היעד
-            currentZ += (targetZ - currentZ) * 0.08;
-            speed = (targetZ - currentZ) * 0.1; // משמש לאפקט הכוכבים
+        function jumpTo(z) { targetZ = z; }
 
-            // עדכון הבר למטה
-            let progress = (currentZ / maxScroll) * 100;
-            document.getElementById('bar').style.width = Math.min(100, Math.max(0, progress)) + '%';
-            document.getElementById('depth').innerText = `DEPTH: ${Math.floor(currentZ)}`;
+        // --- Engine ---
+        function update() {
+            // תנועה חלקה
+            currentZ += (targetZ - currentZ) * 0.07;
 
-            // הזזת האלמנטים
+            // עדכון HUD
+            const progress = (currentZ / maxScroll) * 100;
+            document.getElementById('bar').style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            document.getElementById('depth-txt').innerText = `SECTOR Z: ${Math.floor(currentZ)}`;
+
+            // עדכון נקודות ניווט
+            const activeIdx = Math.round(currentZ / Z_SPACING);
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIdx));
+
+            // הטיית העולם לפי עכבר + גלילה
+            world.style.transform = `rotateX(${-mouseY}deg) rotateY(${mouseX}deg) translateZ(${currentZ}px)`;
+
             stages.forEach(stage => {
-                // המיקום המקורי של האלמנט
-                const baseZ = parseInt(stage.getAttribute('data-z'));
+                const baseZ = -parseInt(stage.getAttribute('data-z'));
+                const distance = Math.abs(currentZ - baseZ);
                 
-                // איפה האלמנט ביחס למצלמה?
-                // כשאנחנו גוללים פנימה (currentZ גדל), האלמנט מתקרב (נהיה חיובי)
-                const elementZ = baseZ + currentZ;
-
-                // חישוב שקיפות (Opacity) וטשטוש (Blur)
-                // המטרה: שיראו את האלמנט רק כשהוא בטווח הראייה (בין -2000 ל +1000)
+                // חישוב אופסיטי חכם
+                let opacity = 1 - (distance / 2500);
+                let blur = distance / 80;
                 
-                let opacity = 0;
-                let blur = 0;
-                let pointerEvents = 'none'; // מבטל לחיצות כשהאלמנט רחוק
-
-                if (elementZ > -2500 && elementZ < 1500) {
-                    // טווח הראייה
-                    
-                    // חישוב דעיכה בכניסה וביציאה
-                    // ככל שמתקרב ל-0 (הפוקוס), האופסיטי עולה ל-1
-                    let distance = Math.abs(elementZ);
-                    opacity = 1 - (distance / 2000);
-                    
-                    // טשטוש ככל שרחוק
-                    blur = distance / 50;
-
-                    if (elementZ > -500 && elementZ < 500) {
-                        pointerEvents = 'auto'; // רק כשהוא קרוב, אפשר ללחוץ על כפתורים
-                    }
-                }
-
-                // החלת העיצוב
                 stage.style.opacity = Math.max(0, opacity);
                 stage.style.filter = `blur(${blur}px)`;
-                stage.style.pointerEvents = pointerEvents;
+                stage.style.pointerEvents = distance < 1000 ? 'auto' : 'none';
                 
-                // הזזה בתלת מימד
-                stage.style.transform = `translate(-50%, -50%) translateZ(${elementZ}px)`;
+                // מיקום הסקשן בעומק
+                const zPos = stage.getAttribute('data-z');
+                stage.style.transform = `translate(-50%, -50%) translateZ(${zPos}px)`;
             });
 
-            requestAnimationFrame(animate);
+            requestAnimationFrame(update);
         }
-        animate();
+        update();
 
-
-        // --- רקע כוכבים (Starfield) ---
+        // --- Starfield Canvas (Warp Speed Edition) ---
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let stars = [];
+        const numStars = 400;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function initStars() {
+            stars = [];
+            for(let i=0; i<numStars; i++) {
+                stars.push({
+                    x: (Math.random() - 0.5) * 3000,
+                    y: (Math.random() - 0.5) * 3000,
+                    z: Math.random() * 3000,
+                    px: 0, py: 0 // מיקום קודם לציור קווים
+                });
+            }
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
-        class Star {
-            constructor() {
-                this.init();
-            }
-            init() {
-                this.x = (Math.random() - 0.5) * canvas.width * 2;
-                this.y = (Math.random() - 0.5) * canvas.height * 2;
-                this.z = Math.random() * 2000 + 500;
-            }
-            move() {
-                // הכוכבים זזים בהתאם למהירות הגלילה (אפקט Warp)
-                this.z -= (5 + speed); 
-                if (this.z <= 0 || this.z > 3000) this.init();
-            }
-            draw() {
-                let scale = 1000 / this.z;
-                let sx = (this.x * scale) + (canvas.width / 2);
-                let sy = (this.y * scale) + (canvas.height / 2);
-                let size = (1 - this.z/2000) * 3;
-                
-                if (sx > 0 && sx < canvas.width && sy > 0 && sy < canvas.height) {
+        function drawStars() {
+            ctx.fillStyle = 'rgba(2, 2, 5, 0.2)'; // שובל טשטוש
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+            
+            const speed = (targetZ - currentZ) * 0.15; // מהירות הגלילה משפיעה על הכוכבים
+            
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 1.5;
+
+            stars.forEach(s => {
+                s.z -= (4 + speed); 
+                if(s.z <= 0) { s.z = 3000; s.px = 0; s.py = 0; }
+                if(s.z > 3000) { s.z = 1; s.px = 0; s.py = 0; }
+
+                const scale = 800 / s.z;
+                const x = s.x * scale + canvas.width/2;
+                const y = s.y * scale + canvas.height/2;
+
+                if(s.px !== 0 && Math.abs(speed) > 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(s.px, s.py);
+                    ctx.stroke();
+                } else {
+                    const size = Math.max(0, (1 - s.z/3000) * 2);
                     ctx.fillStyle = "white";
                     ctx.beginPath();
-                    ctx.arc(sx, sy, Math.max(0, size), 0, Math.PI*2);
+                    ctx.arc(x, y, size, 0, Math.PI*2);
                     ctx.fill();
                 }
-            }
+                
+                s.px = x; s.py = y;
+            });
+            requestAnimationFrame(drawStars);
         }
 
-        for (let i = 0; i < 300; i++) stars.push(new Star());
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        });
 
-        function loopStars() {
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => { s.move(); s.draw(); });
-            requestAnimationFrame(loopStars);
-        }
-        loopStars();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initStars();
+        drawStars();
 
     </script>
 </body>
