@@ -3,44 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>בוטיק פירסינג | AvinTattoo</title>
+    <title>בוטיק פירסינג | AvinTattoo Shop</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #1a0606; --card: #2d0b0b; --green: #25d366; --border: #471717; }
+        :root { --bg: #1a0606; --card: #2d0b0b; --green: #25d366; --gold: #d4af37; --border: #471717; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Heebo', sans-serif; background-color: var(--bg); color: white; line-height: 1.6; }
+        body { font-family: 'Heebo', sans-serif; background-color: var(--bg); color: white; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 3rem 1rem; border-bottom: 1px solid var(--border); background-color: #2d0b0b; }
-        
-        .cat-nav { display: flex; justify-content: center; gap: 10px; margin-top: 2rem; flex-wrap: wrap; }
-        .cat-btn { background: transparent; border: 1px solid #555; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer; transition: 0.3s; }
-        .cat-btn.active { background: white; color: black; border-color: white; }
+        header { padding: 3rem 1rem; text-align: center; background: #2d0b0b; border-bottom: 1px solid var(--border); }
+        .back-link { position: absolute; top: 20px; right: 20px; color: #aaa; text-decoration: none; font-size: 0.9rem; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-        .card { background: var(--card); border-radius: 10px; padding: 15px; border: 1px solid var(--border); display: flex; flex-direction: column; transition: 0.3s; }
-        .card:hover { border-color: #888; }
-        .card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 5px; margin-bottom: 15px; }
-        
-        .card h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 700; }
-        .card .mat { font-size: 0.9rem; color: #ccc; margin-bottom: 5px; }
-        .card .sku { font-size: 0.8rem; color: #777; margin-bottom: 15px; }
-        
-        .btn-order { background: var(--green); color: white; text-decoration: none; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; margin-top: auto; }
-        .back-btn { position: absolute; top: 20px; right: 20px; color: #aaa; text-decoration: none; font-size: 0.9rem; }
+        .search-container { max-width: 600px; margin: -25px auto 0; padding: 0 20px; position: relative; z-index: 10; }
+        #search-bar { width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid var(--border); background: #1a0606; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); outline: none; }
 
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0; }
-            .container { padding: 1rem; }
-        }
+        .cat-nav { display: flex; justify-content: center; gap: 10px; margin: 2rem 0; flex-wrap: wrap; }
+        .cat-btn { background: none; border: 1px solid #444; color: white; padding: 8px 20px; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .cat-btn.active { background: white; color: black; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .card { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 15px; cursor: zoom-in; transition: 0.3s; }
+        .card img:hover { opacity: 0.8; }
+        .card h4 { font-weight: 700; margin-bottom: 5px; }
+        .mat-label { font-size: 0.85rem; color: var(--gold); margin-bottom: 10px; }
+        
+        .btn-order { background: var(--green); color: white; text-decoration: none; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: auto; }
+
+        /* Lightbox CSS */
+        #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; cursor: zoom-out; }
+        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 1rem; } }
     </style>
 </head>
 <body>
 
+    <div id="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" src=""></div>
+
     <header>
-        <a href="index.html" class="back-btn">→ חזרה לדף הבית</a>
-        <h1 style="font-size: 2.5rem; font-weight: 900;">בוטיק פירסינג</h1>
-        <p style="margin-top: 10px; color: #ccc;">מבחר תכשיטים בסטנדרט רפואי</p>
+        <a href="index.html" class="back-link">→ חזרה לבית</a>
+        <h1 style="font-weight: 900; font-size: 2.5rem;">בוטיק פירסינג</h1>
         <div class="cat-nav">
             <button class="cat-btn active" onclick="filter('all', this)">הכל</button>
             <button class="cat-btn" onclick="filter('titanium', this)">⚪ טיטניום</button>
@@ -48,9 +50,11 @@
         </div>
     </header>
 
-    <div class="container">
-        <div class="grid" id="product-grid"></div>
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="חפש תכשיט (שם או מק״ט)..." onkeyup="search()">
     </div>
+
+    <div class="grid" id="grid"></div>
 
     <script>
         const products = [
@@ -65,33 +69,38 @@
             { id: "1013", name: "מרקיזה ירוקה (3 מ\"מ)", mat: "titanium", matLabel: "⚪ טיטניום", img: "https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1013-d79ed7a8d7a7d799d796d794-3d79ed79e-d7a6d791d7a2-d799d7a8d795d7a7-d798d799d798d7a0d799d795d79d.jpg" }
         ];
 
-        function filter(type, btn) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-            
-            // UI Toggle
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-
-            const filtered = type === 'all' ? products : products.filter(p => p.mat === type);
-            
-            filtered.forEach(p => {
-                grid.innerHTML += `
-                    <div class="card">
-                        <img src="${p.img}" loading="lazy">
-                        <h4>${p.name}</h4>
-                        <p class="mat">${p.matLabel}</p>
-                        <p class="sku">מק"ט: ${p.id}</p>
-                        <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח להזמין: ${p.name} (${p.id})" class="btn-order">הזמנה ב-WhatsApp</a>
-                    </div>
-                `;
-            });
+        function render(list) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = list.map(p => `
+                <div class="card">
+                    <img src="${p.img}" onclick="openImg('${p.img}')" alt="${p.name}">
+                    <h4>${p.name}</h4>
+                    <p class="mat-label">${p.matLabel}</p>
+                    <p style="font-size: 0.75rem; color: #888; margin-bottom: 15px;">מק"ט: ${p.id}</p>
+                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר לגבי: ${p.name} (${p.id})" class="btn-order">הזמנה ב-WhatsApp</a>
+                </div>
+            `).join('');
         }
 
-        // Check URL for category on load
-        const urlParams = new URLSearchParams(window.location.search);
-        const cat = urlParams.get('cat') || 'all';
-        filter(cat, document.querySelector(`[onclick*="'${cat}'"]`));
+        function filter(type, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = type === 'all' ? products : products.filter(p => p.mat === type);
+            render(filtered);
+        }
+
+        function search() {
+            const query = document.getElementById('search-bar').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.id.includes(query));
+            render(filtered);
+        }
+
+        function openImg(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        render(products);
     </script>
 </body>
 </html>
