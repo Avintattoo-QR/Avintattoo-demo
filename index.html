@@ -3,89 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OfficeConnect | צ'אט משרדי</title>
+    <title>OfficeConnect | צ'אט צוות חי</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Heebo', sans-serif; background-color: #f3f4f6; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        #chat-messages { height: calc(100vh - 180px); }
+        body { font-family: 'Heebo', sans-serif; background-color: #f1f5f9; }
+        #chat-window { height: calc(100vh - 180px); }
+        .message-bubble { max-width: 75%; position: relative; animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="h-screen overflow-hidden flex flex-col">
+<body class="h-screen flex flex-col overflow-hidden">
 
     <!-- מסך כניסה -->
-    <div id="login-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-95 z-50 flex items-center justify-center">
+    <div id="login-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-90 z-50 flex items-center justify-center hidden">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-80 md:w-96 text-center">
-            <div class="text-5xl mb-4">🏢</div>
-            <h1 class="text-2xl font-bold mb-6 text-slate-800">כניסה ל-OfficeConnect</h1>
-            <input type="text" id="username-input" placeholder="איך קוראים לך?" class="w-full border-2 border-slate-200 p-3 rounded-lg mb-4 focus:border-blue-500 outline-none text-center">
-            <button id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all">התחברות לצ'אט</button>
+            <div class="text-5xl mb-4">💬</div>
+            <h1 class="text-2xl font-bold mb-2 text-slate-800">ברוכים הבאים</h1>
+            <p class="text-slate-500 mb-6 italic">איך תרצה להופיע בצ'אט?</p>
+            <input type="text" id="username-input" placeholder="הכנס שם מלא..." class="w-full border-2 border-slate-200 p-3 rounded-xl focus:border-blue-500 outline-none text-center mb-4 transition-all">
+            <button id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all active:scale-95">התחברות</button>
         </div>
     </div>
 
     <!-- סרגל עליון -->
-    <header class="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center shadow-sm z-10">
+    <header class="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center shadow-sm">
         <div class="flex items-center gap-3">
-            <div class="bg-blue-600 text-white p-2 rounded-lg font-bold">OC</div>
-            <h2 class="text-xl font-bold text-slate-800">OfficeConnect</h2>
+            <div class="bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold shadow-md">OC</div>
+            <div>
+                <h2 class="text-lg font-bold text-slate-800 leading-none">OfficeConnect</h2>
+                <span class="text-xs text-green-500 font-medium flex items-center gap-1">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> מחובר לשרת חי
+                </span>
+            </div>
         </div>
-        <div class="flex items-center gap-4">
-            <span id="user-display" class="text-slate-600 font-medium"></span>
-            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold border border-blue-200">👤</div>
+        <div class="flex items-center gap-3 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+            <span id="user-display" class="text-slate-700 font-bold text-sm"></span>
+            <button id="logout-btn" title="החלף שם" class="text-slate-400 hover:text-red-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
         <!-- סרגל צד (ערוצים) -->
-        <aside class="w-20 md:w-64 bg-slate-800 text-slate-300 flex flex-col transition-all">
-            <div class="p-4 md:p-6">
-                <h3 class="hidden md:block text-xs uppercase tracking-widest text-slate-500 font-bold mb-4">ערוצי משרד</h3>
+        <aside class="w-20 md:w-64 bg-slate-800 text-slate-400 flex flex-col transition-all">
+            <div class="p-4">
+                <h3 class="hidden md:block text-[10px] uppercase tracking-[2px] font-bold mb-4 opacity-50">ערוצי שיחה</h3>
                 <nav id="channels" class="space-y-2">
-                    <button data-channel="general" class="channel-btn w-full flex items-center justify-center md:justify-start gap-2 p-3 rounded-lg hover:bg-slate-700 transition-all active bg-slate-700 text-white">
-                        <span>#</span><span class="hidden md:block">כללי</span>
+                    <button data-channel="general" class="channel-btn w-full flex items-center justify-center md:justify-start gap-3 p-3 rounded-xl hover:bg-slate-700 hover:text-white transition-all active bg-slate-700 text-white">
+                        <span class="text-xl font-bold">#</span><span class="hidden md:block font-medium">כללי</span>
                     </button>
-                    <button data-channel="dev" class="channel-btn w-full flex items-center justify-center md:justify-start gap-2 p-3 rounded-lg hover:bg-slate-700 transition-all">
-                        <span>#</span><span class="hidden md:block">פיתוח</span>
+                    <button data-channel="marketing" class="channel-btn w-full flex items-center justify-center md:justify-start gap-3 p-3 rounded-xl hover:bg-slate-700 hover:text-white transition-all">
+                        <span class="text-xl font-bold">#</span><span class="hidden md:block font-medium">שיווק</span>
                     </button>
-                    <button data-channel="marketing" class="channel-btn w-full flex items-center justify-center md:justify-start gap-2 p-3 rounded-lg hover:bg-slate-700 transition-all">
-                        <span>#</span><span class="hidden md:block">שיווק</span>
+                    <button data-channel="dev" class="channel-btn w-full flex items-center justify-center md:justify-start gap-3 p-3 rounded-xl hover:bg-slate-700 hover:text-white transition-all">
+                        <span class="text-xl font-bold">#</span><span class="hidden md:block font-medium">פיתוח</span>
                     </button>
                 </nav>
             </div>
         </aside>
 
-        <!-- אזור הצ'אט המרכזי -->
-        <main class="flex-1 flex flex-col bg-slate-50">
-            <div class="px-6 py-3 border-b border-slate-200 bg-white flex justify-between items-center">
-                <h3 id="current-channel-name" class="font-bold text-slate-700 text-lg"># כללי</h3>
-                <div class="text-xs text-green-500 flex items-center gap-1 font-medium">
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> מחובר בזמן אמת
-                </div>
+        <!-- אזור הצ'אט -->
+        <main class="flex-1 flex flex-col">
+            <!-- כותרת ערוץ -->
+            <div class="px-6 py-2 bg-white border-b border-slate-200 flex items-center justify-between">
+                <h3 id="current-channel-display" class="font-bold text-slate-700"># כללי</h3>
+                <div class="text-[10px] text-slate-400">עדכון אחרון: עכשיו</div>
             </div>
 
-            <!-- הודעות -->
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 custom-scrollbar">
-                <div class="text-center text-slate-400 text-sm italic mt-10">טוען הודעות...</div>
+            <!-- חלון הודעות -->
+            <div id="chat-window" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 custom-scrollbar bg-slate-50">
+                <!-- ההודעות יופיעו כאן -->
             </div>
 
-            <!-- תיבת שליחה -->
+            <!-- תיבת כתיבה -->
             <div class="p-4 bg-white border-t border-slate-200">
-                <form id="message-form" class="flex gap-2 max-w-5xl mx-auto">
-                    <input type="text" id="message-input" placeholder="כתוב הודעה לצוות..." autocomplete="off" class="flex-1 border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none shadow-sm transition-all">
-                    <button type="submit" class="bg-blue-600 text-white px-6 md:px-8 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-md transition-all active:scale-95">שלח</button>
+                <form id="chat-form" class="flex gap-2 max-w-5xl mx-auto items-center">
+                    <input type="text" id="chat-input" placeholder="כתוב הודעה לכולם..." autocomplete="off" class="flex-1 border border-slate-300 p-3 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all shadow-sm">
+                    <button type="submit" class="bg-blue-600 text-white p-3.5 rounded-2xl font-bold hover:bg-blue-700 shadow-md transition-all active:scale-90 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
                 </form>
             </div>
         </main>
     </div>
 
-    <!-- לוגיקה מחוברת ל-Firebase שלך -->
+    <!-- Firebase Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
 
-        // הגדרות הקונפיגורציה שסיפקת
+        // הגדרות הפרויקט שלך
         const firebaseConfig = {
             apiKey: "AIzaSyA9gn1gifnrYPkdc-vgkcnjweTQ7szw8iM",
             authDomain: "database-test-59ee4.firebaseapp.com",
@@ -97,115 +112,105 @@
             measurementId: "G-9X18YVEWR0"
         };
 
-        // אתחול Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         
-        let currentUser = "";
+        let currentUser = localStorage.getItem('chat_username') || "";
         let currentChannel = "general";
-        let unsubscribe = null;
 
-        // אלמנטים ב-DOM
+        // DOM Elements
+        const chatWindow = document.getElementById('chat-window');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
         const loginOverlay = document.getElementById('login-overlay');
-        const loginInput = document.getElementById('username-input');
-        const loginBtn = document.getElementById('login-btn');
-        const userDisplay = document.getElementById('user-display');
-        const messageForm = document.getElementById('message-form');
-        const messageInput = document.getElementById('message-input');
-        const chatMessages = document.getElementById('chat-messages');
-        const channelNameDisplay = document.getElementById('current-channel-name');
+        const usernameInput = document.getElementById('username-input');
 
-        // פונקציית התחברות
-        const login = () => {
-            const name = loginInput.value.trim();
-            if (name.length < 2) return alert("אנא הכנס שם (לפחות 2 אותיות)");
-            currentUser = name;
-            userDisplay.innerText = currentUser;
-            loginOverlay.style.display = 'none';
-            listenForMessages();
+        // Check login status
+        if (!currentUser) {
+            loginOverlay.classList.remove('hidden');
+        } else {
+            document.getElementById('user-display').innerText = currentUser;
+            startChat();
+        }
+
+        // Login function
+        document.getElementById('login-btn').onclick = () => {
+            const val = usernameInput.value.trim();
+            if (val.length < 2) return alert("אנא בחר שם של 2 אותיות לפחות");
+            currentUser = val;
+            localStorage.setItem('chat_username', currentUser);
+            document.getElementById('user-display').innerText = currentUser;
+            loginOverlay.classList.add('hidden');
+            startChat();
         };
 
-        loginBtn.addEventListener('click', login);
-        loginInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') login() });
-
-        // פונקציה להחלפת ערוצים
-        const switchChannel = (channelId) => {
-            currentChannel = channelId;
-            // עדכון UI של כפתורי הערוצים
-            document.querySelectorAll('.channel-btn').forEach(btn => {
-                btn.classList.remove('bg-slate-700', 'text-white');
-                if(btn.dataset.channel === channelId) btn.classList.add('bg-slate-700', 'text-white');
-            });
-            channelNameDisplay.innerText = "# " + (channelId === 'general' ? 'כללי' : channelId === 'dev' ? 'פיתוח' : 'שיווק');
-            listenForMessages();
+        // Logout (Change name)
+        document.getElementById('logout-btn').onclick = () => {
+            localStorage.removeItem('chat_username');
+            location.reload();
         };
 
+        // Channel switching
         document.querySelectorAll('.channel-btn').forEach(btn => {
-            btn.addEventListener('click', () => switchChannel(btn.dataset.channel));
+            btn.onclick = () => {
+                currentChannel = btn.dataset.channel;
+                document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('bg-slate-700', 'text-white'));
+                btn.classList.add('bg-slate-700', 'text-white');
+                document.getElementById('current-channel-display').innerText = "# " + (currentChannel === 'general' ? 'כללי' : currentChannel === 'marketing' ? 'שיווק' : 'פיתוח');
+                startChat();
+            };
         });
 
-        // שליחת הודעה
-        messageForm.addEventListener('submit', async (e) => {
+        // Send Message
+        chatForm.onsubmit = async (e) => {
             e.preventDefault();
-            const text = messageInput.value.trim();
+            const text = chatInput.value.trim();
             if (!text) return;
 
             const now = new Date();
-            const timeStr = now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
+            await push(ref(db, 'messages'), {
+                user: currentUser,
+                text: text,
+                channel: currentChannel,
+                time: now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0'),
+                timestamp: Date.now()
+            });
 
-            try {
-                await push(ref(db, 'messages'), {
-                    user: currentUser,
-                    text: text,
-                    channel: currentChannel,
-                    time: timeStr,
-                    timestamp: Date.now()
-                });
-                messageInput.value = '';
-            } catch (err) {
-                console.error("שגיאה בשליחה:", err);
-            }
-        });
+            chatInput.value = '';
+            chatInput.focus();
+        };
 
-        // האזנה להודעות בזמן אמת
-        function listenForMessages() {
-            // ניקוי האזנה קודמת אם קיימת
-            const messagesRef = ref(db, 'messages');
-            const channelQuery = query(
-                messagesRef, 
-                orderByChild('channel'), 
+        // Listen for messages
+        function startChat() {
+            const msgQuery = query(
+                ref(db, 'messages'),
+                orderByChild('channel'),
                 equalTo(currentChannel),
                 limitToLast(50)
             );
 
-            onValue(channelQuery, (snapshot) => {
-                chatMessages.innerHTML = '';
+            onValue(msgQuery, (snapshot) => {
+                chatWindow.innerHTML = '';
                 const data = snapshot.val();
-                
-                if (!data) {
-                    chatMessages.innerHTML = '<div class="text-center text-slate-400 text-sm mt-10">אין הודעות בערוץ זה עדיין.</div>';
-                    return;
+                if (data) {
+                    const sortedMsgs = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+                    sortedMsgs.forEach(msg => {
+                        const isMe = msg.user === currentUser;
+                        const bubble = document.createElement('div');
+                        bubble.className = `flex flex-col ${isMe ? 'items-start' : 'items-end'} mb-4`;
+                        bubble.innerHTML = `
+                            <div class="message-bubble ${isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-slate-800 rounded-bl-none'} p-3 rounded-2xl shadow-sm border border-slate-200">
+                                <div class="text-[10px] font-bold mb-1 opacity-70 uppercase tracking-tight">${msg.user}</div>
+                                <div class="text-sm leading-relaxed break-words">${msg.text}</div>
+                                <div class="text-[9px] mt-1 text-left opacity-50">${msg.time}</div>
+                            </div>
+                        `;
+                        chatWindow.appendChild(bubble);
+                    });
+                    chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+                } else {
+                    chatWindow.innerHTML = `<div class="text-center text-slate-400 text-sm mt-20 italic">אין הודעות בערוץ זה. התחל את השיחה!</div>`;
                 }
-
-                // המרה למערך ומיון
-                const msgs = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
-                
-                msgs.forEach(m => {
-                    const isMe = m.user === currentUser;
-                    const div = document.createElement('div');
-                    div.className = `flex flex-col ${isMe ? 'items-start' : 'items-end'} animate-in fade-in slide-in-from-bottom-2 duration-300`;
-                    div.innerHTML = `
-                        <div class="max-w-[85%] md:max-w-[70%] ${isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-slate-800 rounded-bl-none'} p-3 rounded-2xl shadow-sm border border-slate-200">
-                            <div class="text-[10px] font-bold mb-1 opacity-75 uppercase tracking-wider">${m.user}</div>
-                            <div class="text-sm md:text-base leading-relaxed break-words">${m.text}</div>
-                            <div class="text-[9px] mt-1 text-left opacity-60">${m.time}</div>
-                        </div>
-                    `;
-                    chatMessages.appendChild(div);
-                });
-                
-                // גלילה אוטומטית לסוף
-                chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
             });
         }
     </script>
