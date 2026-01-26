@@ -4,149 +4,334 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AvinTattoo | סטודיו לקעקועים ופירסינג</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #2d0b0b;
-            --bg-shop: #1a0606;
-            --accent-gold: #d4af37;
-            --accent-red: #a12626;
-            --accent-green: #25d366;
-            --text: #ffffff;
+            --wp--preset--color--contrast: #ffffff;
+            --bg-deep-red: #2d0b0b;
+            --bg-dark-black: #1a0606;
+            --whatsapp-green: #25d366;
+            --consult-red: #a12626;
+            --border-color: #471717;
+            --form-bg: #4b1616;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Heebo', sans-serif; background-color: var(--bg-main); color: var(--text); line-height: 1.6; }
+        body { 
+            font-family: 'Heebo', sans-serif; 
+            background-color: var(--bg-deep-red); 
+            color: #ffffff; 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-        /* וורדפרס שפייסרס */
+        /* --- WordPress Spacers --- */
         .wp-block-spacer { height: 100px; }
+        .desktop-only-spacer { height: 100px; }
         @media (max-width: 768px) { .desktop-only-spacer { display: none; } }
 
-        /* Hero Section - נאמן לבלוק Cover */
-        .hero { position: relative; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .hero-desktop { height: 755px; }
-        .hero-mobile { height: 100vh; display: none; }
-        
-        video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; }
-        .overlay { position: absolute; inset: 0; background-color: rgba(0,0,0,0.2); }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1rem; text-align: center; }
-
-        /* כפתורי וורדפרס */
-        .wp-block-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
-        .btn { 
-            text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; 
-            border: 2px solid white; color: white; transition: 0.3s; display: inline-block;
+        /* --- Hero Section (The Cover Block) --- */
+        .hero-desktop {
+            position: relative;
+            min-height: 755px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        .btn-outline:hover { background: white; color: var(--bg-main); }
-        .btn-fill-whatsapp { background-color: var(--accent-green); border: none; font-size: 1.25rem; }
-        .btn-fill-red { background-color: var(--accent-red); border: none; font-size: 1.25rem; }
+        .hero-mobile {
+            position: relative;
+            min-height: 100vh;
+            display: none;
+            overflow: hidden;
+        }
 
-        /* חנות בדף הבית */
-        .shop-preview { background-color: var(--bg-shop); }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 30px; }
-        .product-card { border: 1px solid #471717; border-radius: 8px; padding: 10px; text-align: center; }
-        .product-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
 
-        /* טופס יצירת קשר */
-        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: right; align-items: center; }
-        .form-container { background: black; border: 1px solid #4e1b1b; border-radius: 16px; padding: 2rem; }
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #4e1b1b; background: #4b1616; color: white; font-family: inherit; }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            z-index: -1;
+        }
 
-        .sticky-whatsapp { position: fixed; bottom: 0; width: 100%; background: var(--accent-green); text-align: center; padding: 15px; z-index: 1000; }
-        .sticky-whatsapp a { color: white; text-decoration: none; font-weight: bold; }
+        /* --- Layout Containers --- */
+        .alignfull { width: 100%; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+        /* --- Buttons Style --- */
+        .wp-block-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 0;
+        }
+        .wp-block-button__link {
+            text-decoration: none;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: 0.3s ease;
+            display: inline-block;
+            border: 2px solid transparent;
+            font-size: 1.1rem;
+        }
+        .is-style-outline { border: 2px solid white; background: transparent; }
+        .is-style-outline:hover { background: white; color: var(--bg-deep-red); }
+
+        .btn-whatsapp { background-color: var(--whatsapp-green) !important; border: none; font-size: 1.3rem; }
+        .btn-consult { background-color: var(--consult-red) !important; border: none; font-size: 1.3rem; }
+
+        /* --- Shop Grid (Boutique) --- */
+        .shop-grid-section { background-color: var(--bg-dark-black); padding: 3rem 1rem; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 30px;
+        }
+        .product-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .product-card h5 { font-size: 1rem; margin-bottom: 8px; font-weight: 600; }
+        .product-material { font-size: 0.9rem; color: #ffd700; margin-bottom: 5px; }
+        .product-sku { font-size: 0.8rem; color: #888; margin-bottom: 15px; }
+
+        /* --- Contact Form Section --- */
+        .lead-section { padding: 5rem 1rem; background-color: var(--bg-deep-red); }
+        .lead-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .lead-text h2 { font-size: 3rem; line-height: 1.2; margin-bottom: 20px; }
+        .lead-text ul { list-style: none; margin-top: 20px; }
+        .lead-text li { margin-bottom: 10px; font-size: 1.2rem; }
+
+        .form-container {
+            background-color: #000000;
+            border: 1px solid #4e1b1b;
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: right;
+        }
+        .form-container label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #4e1b1b;
+            background-color: var(--form-bg);
+            color: white;
+            font-family: inherit;
+        }
+
+        /* --- Sticky Footer --- */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--whatsapp-green);
+            text-align: center;
+            z-index: 9999;
+        }
+        .sticky-cta a {
+            display: block;
+            padding: 18px;
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* --- Google Map --- */
+        .map-wrapper { width: 100%; height: 450px; filter: grayscale(1) invert(0.9) contrast(1.2); }
+
+        /* --- Responsive --- */
         @media (max-width: 768px) {
             .hero-desktop { display: none; }
             .hero-mobile { display: block; }
-            .contact-grid { grid-template-columns: 1fr; text-align: center; }
+            .lead-grid { grid-template-columns: 1fr; text-align: center; }
+            .lead-text h2 { font-size: 2.2rem; text-align: center !important; }
+            .product-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Spacer -->
     <div class="wp-block-spacer desktop-only-spacer"></div>
 
-    <!-- Hero -->
+    <!-- Hero Desktop -->
     <div class="hero hero-desktop">
-        <video autoplay muted loop playsinline src="hero-new.mp4"></video>
-        <div class="overlay"></div>
-    </div>
-    <div class="hero hero-mobile">
-        <video autoplay muted loop playsinline src="hero-new.mp4"></video>
-        <div class="overlay"></div>
+        <video class="hero-video-bg" autoplay muted loop playsinline src="hero-new.mp4"></video>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <!-- Content position center/center spacer matching -->
+            <div style="height:300px"></div>
+            <div style="height:137px"></div>
+            <div style="height:300px"></div>
+        </div>
     </div>
 
-    <!-- Nav Section -->
-    <section class="container">
-        <h2 style="font-size: 2rem;">לאן תרצו להמשיך?</h2>
-        <div class="wp-block-buttons">
-            <a href="shop.html" class="btn btn-outline" style="width: 50%;">SHOP</a>
-        </div>
-        <div class="wp-block-buttons">
-            <a href="full-site.html#piercings-gallery" class="btn btn-outline">גלריית פירסינג</a>
-            <a href="full-site.html" class="btn btn-outline">לאתר המלא</a>
-            <a href="full-site.html#tattoos-gallery" class="btn btn-outline">גלריית קעקועים</a>
-            <a href="full-site.html" class="btn btn-outline">מידע קעקועים</a>
-            <a href="full-site.html" class="btn btn-outline">מידע פירסינג</a>
-        </div>
-        <div class="wp-block-buttons">
-            <a href="https://api.whatsapp.com/send?phone=9720537239660" class="btn btn-fill-whatsapp">WhatsApp</a>
-            <a href="#lead-form" class="btn btn-fill-red">תיאום ייעוץ</a>
+    <!-- Hero Mobile -->
+    <div class="hero hero-mobile">
+        <video class="hero-video-bg" autoplay muted loop playsinline src="hero-new.mp4"></video>
+        <div class="hero-overlay" style="background-color: rgba(0,0,0,0.1);"></div>
+    </div>
+
+    <!-- Main Navigation Section -->
+    <section class="alignfull" style="background-color: var(--bg-deep-red); padding: 3rem 1rem;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem;">לאן תרצו להמשיך?</h2>
+            
+            <div class="wp-block-buttons">
+                <a href="#shop-gallery" class="wp-block-button__link is-style-outline" style="width: 50%;">SHOP</a>
+            </div>
+
+            <div class="wp-block-buttons">
+                <a href="#piercings" class="wp-block-button__link is-style-outline">גלריית פירסינג</a>
+                <a href="#full-site" class="wp-block-button__link is-style-outline">לאתר המלא</a>
+                <a href="#tattoos" class="wp-block-button__link is-style-outline">גלריית קעקועים</a>
+                <a href="#info" class="wp-block-button__link is-style-outline">מידע קעקועים</a>
+                <a href="#info" class="wp-block-button__link is-style-outline">מידע פירסינג</a>
+            </div>
+
+            <div class="wp-block-buttons" style="margin-top: 30px;">
+                <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח למידע נוסף" class="wp-block-button__link btn-whatsapp">WhatsApp</a>
+                <a href="#lead-form" class="wp-block-button__link btn-consult">תיאום ייעוץ</a>
+            </div>
         </div>
     </section>
 
-    <!-- Shop Preview -->
-    <section class="shop-preview section-padding">
+    <!-- Shop Grid Section -->
+    <section id="shop-gallery" class="shop-grid-section">
         <div class="container">
-            <h2 style="font-size: 2rem;">בוטיק פירסינג בסטודיו</h2>
-            <p style="font-size: 0.9rem;">מבחר תכשיטים בסטנדרט רפואי | לפרטים והזמנה לחצו על הפריט</p>
-            <div class="product-grid">
-                <!-- Example Items -->
+            <h2 style="text-align: center; font-size: 2.5rem;">בוטיק פירסינג בסטודיו</h2>
+            <p style="text-align: center; font-size: 0.9rem; color: #ccc;">מבחר תכשיטים בסטנדרט רפואי | לפרטים והזמנה לחצו על הפריט</p>
+            
+            <div class="product-grid" id="main-product-grid">
+                <!-- Products list (Showing first 4 as example, you can add all 41) -->
                 <div class="product-card">
                     <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1052-d79cd795d798d795d7a1-d7a7d798d79f-d7a2d79d-d7a9d7a8d7a9d7a8d7aa-d7a6d791d7a2-d7a6d799d7a4d795d799-d796d794d791.jpg">
                     <h5>לוטוס אבן עם שרשרת</h5>
-                    <p>🟡 ציפוי זהב | מק"ט 1052</p>
-                    <a href="shop.html" class="btn btn-fill-whatsapp" style="width:100%; border-radius:5px; font-size:1rem;">הזמנה</a>
+                    <p class="product-material">🟡 ציפוי זהב</p>
+                    <p class="product-sku">מק"ט: 1052</p>
+                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: לוטוס אבן שרשרת (1052)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
                 </div>
+                
                 <div class="product-card">
                     <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1023-d79cd791d7a8d798-d796d7a8d799d7a7d795f-d7a7d798d79f-d798d799d798d7a0d799d795d79d.jpg">
                     <h5>לאברט זירקון</h5>
-                    <p>⚪️ טיטניום | מק"ט 1023</p>
-                    <a href="shop.html" class="btn btn-fill-whatsapp" style="width:100%; border-radius:5px; font-size:1rem;">הזמנה</a>
+                    <p class="product-material">⚪️ טיטניום</p>
+                    <p class="product-sku">מק"ט: 1023</p>
+                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: לאברט זירקון (1023)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1071-d7a4d7a8d797-d791d7a8d7a7d799d796d795d7aa-d7a6d799d7a4d795d799-d796d794d791.jpg">
+                    <h5>פרח מרקיזות</h5>
+                    <p class="product-material">🟡 ציפוי זהב</p>
+                    <p class="product-sku">מק"ט: 1071</p>
+                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: פרח מרקיזות (1071)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1054-d798d799d7a4d794-d7a0d795d7a4d79cd7aa-4d79ed79e-d7a6d799d7a4d795d799-d796d794d791.jpg">
+                    <h5>טיפה נופלת 4מ"מ</h5>
+                    <p class="product-material">🟡 ציפוי זהב</p>
+                    <p class="product-sku">מק"ט: 1054</p>
+                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: טיפה נופלת (1054)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top: 40px;">
+                <a href="shop.html" class="wp-block-button__link is-style-outline">לכל הקולקציה המלאה ←</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Form Section -->
+    <section id="lead-form" class="lead-section">
+        <div class="container">
+            <div class="lead-grid">
+                <div class="lead-text">
+                    <h2 style="text-align: right;">בואו נדבר תכל'ס על הקעקוע שלך.</h2>
+                    <p style="font-size: 1.2rem;">משאירים פרטים כאן, ומקבלים שיחת ייעוץ ראשונית ללא עלות.</p>
+                    <ul>
+                        <li>✅ הערכת מחיר ראשונית</li>
+                        <li>✅ בדיקת התאמה לרעיון שלך</li>
+                        <li>✅ תיאום תור מהיר בסטודיו</li>
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <form action="https://formspree.io/f/YOUR_ID" method="POST">
+                        <label>שם מלא</label>
+                        <input type="text" name="name" required>
+                        
+                        <label>טלפון לחזרה</label>
+                        <input type="tel" name="phone" required>
+                        
+                        <label>מה הרעיון שלך לקעקוע?</label>
+                        <textarea name="message" rows="4"></textarea>
+                        
+                        <button type="submit" class="wp-block-button__link btn-consult" style="width: 100%;">אני רוצה לקבוע ייעוץ</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Lead Form -->
-    <section id="lead-form" class="container section-padding">
-        <div class="contact-grid">
-            <div>
-                <h2 style="font-size: 3rem;">בואו נדבר תכל'ס על הקעקוע שלך.</h2>
-                <p>משאירים פרטים כאן, ומקבלים שיחת ייעוץ ראשונית ללא עלות.</p>
-                <ul style="list-style:none; margin-top:20px; font-size:1.2rem;">
-                    <li>✅ הערכת מחיר ראשונית</li>
-                    <li>✅ בדיקת התאמה לרעיון שלך</li>
-                    <li>✅ תיאום תור מהיר בסטודיו</li>
-                </ul>
-            </div>
-            <div class="form-container">
-                <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                    <input type="text" name="name" placeholder="שם מלא" required>
-                    <input type="tel" name="phone" placeholder="טלפון לחזרה" required>
-                    <textarea name="idea" placeholder="מה הרעיון שלך לקעקוע?" rows="4"></textarea>
-                    <button type="submit" class="btn btn-fill-red" style="width:100%;">אני רוצה לקבוע ייעוץ</button>
-                </form>
-            </div>
-        </div>
-    </section>
+    <!-- Google Map -->
+    <iframe class="map-wrapper" src="https://maps.google.com/maps?q=הירדן%202%20אריאל&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
 
-    <iframe style="width: 100%; height: 400px; border: none; filter: grayscale(1) invert(0.9);" src="https://maps.google.com/maps?q=הירדן%202%20אריאל&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
-
-    <div class="sticky-whatsapp">
-        <a href="https://api.whatsapp.com/send?phone=9720537239660">דברו איתי ב-WhatsApp 💬</a>
+    <!-- Sticky Footer -->
+    <div class="sticky-cta">
+        <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, הגעתי מהאתר">דברו איתי ב-WhatsApp 💬</a>
     </div>
 
+    <!-- Lightbox Script for images -->
+    <script>
+        // Smooth scroll implementation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
