@@ -3,60 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AvinTattoo | סטודיו בוטיק לקעקועים ופירסינג</title>
+    <title>AvinTattoo | סטודיו לקעקועים ופירסינג</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a0a0a; --gold: #d4af37; --red: #a12626; --green: #25d366; --text: #ffffff; --border: rgba(255,255,255,0.1); }
-        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body { font-family: 'Heebo', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-        header { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); padding: 15px 0; }
-        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-        .hero { position: relative; height: 85vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
-        .hero video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.7; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--bg)); }
-        .hero-content { z-index: 10; text-align: center; }
-        .btn { padding: 14px 35px; border-radius: 50px; font-weight: bold; text-decoration: none; display: inline-block; transition: 0.4s; border: none; cursor: pointer; }
-        .btn-gold { background: var(--gold); color: black; }
-        .btn-outline { border: 2px solid #fff; color: #fff; background: transparent; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 5rem 20px; text-align: center; }
-        .quick-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 3rem 0; }
-        .form-card { background: #161616; padding: 2.5rem; border-radius: 30px; border: 1px solid var(--border); max-width: 600px; margin: 0 auto; text-align: right; }
-        input, textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 12px; color: white; margin-bottom: 15px; outline: none; font-family: inherit; }
-        .whatsapp-float { position: fixed; bottom: 25px; left: 25px; width: 65px; height: 65px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        :root {
+            --bg-main: #2d0b0b;
+            --bg-shop: #1a0606;
+            --accent-gold: #d4af37;
+            --accent-red: #a12626;
+            --accent-green: #25d366;
+            --text: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Heebo', sans-serif; background-color: var(--bg-main); color: var(--text); line-height: 1.6; }
+
+        /* וורדפרס שפייסרס */
+        .wp-block-spacer { height: 100px; }
+        @media (max-width: 768px) { .desktop-only-spacer { display: none; } }
+
+        /* Hero Section - נאמן לבלוק Cover */
+        .hero { position: relative; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .hero-desktop { height: 755px; }
+        .hero-mobile { height: 100vh; display: none; }
+        
+        video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; }
+        .overlay { position: absolute; inset: 0; background-color: rgba(0,0,0,0.2); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1rem; text-align: center; }
+
+        /* כפתורי וורדפרס */
+        .wp-block-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+        .btn { 
+            text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; 
+            border: 2px solid white; color: white; transition: 0.3s; display: inline-block;
+        }
+        .btn-outline:hover { background: white; color: var(--bg-main); }
+        .btn-fill-whatsapp { background-color: var(--accent-green); border: none; font-size: 1.25rem; }
+        .btn-fill-red { background-color: var(--accent-red); border: none; font-size: 1.25rem; }
+
+        /* חנות בדף הבית */
+        .shop-preview { background-color: var(--bg-shop); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 30px; }
+        .product-card { border: 1px solid #471717; border-radius: 8px; padding: 10px; text-align: center; }
+        .product-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+
+        /* טופס יצירת קשר */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: right; align-items: center; }
+        .form-container { background: black; border: 1px solid #4e1b1b; border-radius: 16px; padding: 2rem; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #4e1b1b; background: #4b1616; color: white; font-family: inherit; }
+
+        .sticky-whatsapp { position: fixed; bottom: 0; width: 100%; background: var(--accent-green); text-align: center; padding: 15px; z-index: 1000; }
+        .sticky-whatsapp a { color: white; text-decoration: none; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .hero-desktop { display: none; }
+            .hero-mobile { display: block; }
+            .contact-grid { grid-template-columns: 1fr; text-align: center; }
+        }
     </style>
 </head>
 <body>
-    <header><div class="nav-inner"><div style="font-weight:900; font-size:1.5rem;">AVIN TATTOO</div>
-        <div style="display:flex; gap:15px;"><a href="shop.html" style="color:var(--gold); font-weight:bold; text-decoration:none;">SHOP</a><a href="experience.html" style="color:white; text-decoration:none;">גלריות</a></div>
-    </div></header>
-    
-    <div class="hero">
-        <video autoplay muted loop playsinline><source src="hero-new.mp4" type="video/mp4"></video>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 style="font-size: clamp(3rem, 10vw, 5rem); font-weight:900; line-height:0.9;">AVIN<br>TATTOO</h1>
-            <p style="color:var(--gold); letter-spacing:3px; margin-top:10px;">ART & PIERCING STUDIO</p>
-            <div style="margin-top:30px; display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
-                <a href="shop.html" class="btn btn-gold">לחנות התכשיטים</a>
-                <a href="experience.html" class="btn btn-outline">גלריות ומידע</a>
-            </div>
-        </div>
+
+    <div class="wp-block-spacer desktop-only-spacer"></div>
+
+    <!-- Hero -->
+    <div class="hero hero-desktop">
+        <video autoplay muted loop playsinline src="hero-new.mp4"></video>
+        <div class="overlay"></div>
+    </div>
+    <div class="hero hero-mobile">
+        <video autoplay muted loop playsinline src="hero-new.mp4"></video>
+        <div class="overlay"></div>
     </div>
 
-    <main class="container">
-        <h2 style="font-size:2.5rem; margin-bottom:2rem;">בואו נדבר תכל'ס</h2>
-        <div id="contact" class="form-card">
-            <p style="text-align:center; margin-bottom:20px; color:#aaa;">השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות</p>
-            <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                <input type="text" name="name" placeholder="שם מלא" required>
-                <input type="tel" name="phone" placeholder="טלפון לחזרה" required>
-                <textarea name="msg" placeholder="מה הרעיון שלך לקעקוע / פירסינג?" rows="4"></textarea>
-                <button type="submit" class="btn" style="background:var(--red); color:white; width:100%;">שלח בקשה לייעוץ</button>
-            </form>
+    <!-- Nav Section -->
+    <section class="container">
+        <h2 style="font-size: 2rem;">לאן תרצו להמשיך?</h2>
+        <div class="wp-block-buttons">
+            <a href="shop.html" class="btn btn-outline" style="width: 50%;">SHOP</a>
         </div>
-    </main>
+        <div class="wp-block-buttons">
+            <a href="full-site.html#piercings-gallery" class="btn btn-outline">גלריית פירסינג</a>
+            <a href="full-site.html" class="btn btn-outline">לאתר המלא</a>
+            <a href="full-site.html#tattoos-gallery" class="btn btn-outline">גלריית קעקועים</a>
+            <a href="full-site.html" class="btn btn-outline">מידע קעקועים</a>
+            <a href="full-site.html" class="btn btn-outline">מידע פירסינג</a>
+        </div>
+        <div class="wp-block-buttons">
+            <a href="https://api.whatsapp.com/send?phone=9720537239660" class="btn btn-fill-whatsapp">WhatsApp</a>
+            <a href="#lead-form" class="btn btn-fill-red">תיאום ייעוץ</a>
+        </div>
+    </section>
 
-    <iframe style="width:100%; height:400px; border:none; filter:grayscale(1) invert(0.9);" src="https://maps.google.com/maps?q=הירדן%202%20אריאל&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
-    <a href="https://api.whatsapp.com/send?phone=9720537239660" class="whatsapp-float"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35"></a>
+    <!-- Shop Preview -->
+    <section class="shop-preview section-padding">
+        <div class="container">
+            <h2 style="font-size: 2rem;">בוטיק פירסינג בסטודיו</h2>
+            <p style="font-size: 0.9rem;">מבחר תכשיטים בסטנדרט רפואי | לפרטים והזמנה לחצו על הפריט</p>
+            <div class="product-grid">
+                <!-- Example Items -->
+                <div class="product-card">
+                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1052-d79cd795d798d795d7a1-d7a7d798d79f-d7a2d79d-d7a9d7a8d7a9d7a8d7aa-d7a6d791d7a2-d7a6d799d7a4d795d799-d796d794d791.jpg">
+                    <h5>לוטוס אבן עם שרשרת</h5>
+                    <p>🟡 ציפוי זהב | מק"ט 1052</p>
+                    <a href="shop.html" class="btn btn-fill-whatsapp" style="width:100%; border-radius:5px; font-size:1rem;">הזמנה</a>
+                </div>
+                <div class="product-card">
+                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1023-d79cd791d7a8d798-d796d7a8d799d7a7d795f-d7a7d798d79f-d798d799d798d7a0d799d795d79d.jpg">
+                    <h5>לאברט זירקון</h5>
+                    <p>⚪️ טיטניום | מק"ט 1023</p>
+                    <a href="shop.html" class="btn btn-fill-whatsapp" style="width:100%; border-radius:5px; font-size:1rem;">הזמנה</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Form -->
+    <section id="lead-form" class="container section-padding">
+        <div class="contact-grid">
+            <div>
+                <h2 style="font-size: 3rem;">בואו נדבר תכל'ס על הקעקוע שלך.</h2>
+                <p>משאירים פרטים כאן, ומקבלים שיחת ייעוץ ראשונית ללא עלות.</p>
+                <ul style="list-style:none; margin-top:20px; font-size:1.2rem;">
+                    <li>✅ הערכת מחיר ראשונית</li>
+                    <li>✅ בדיקת התאמה לרעיון שלך</li>
+                    <li>✅ תיאום תור מהיר בסטודיו</li>
+                </ul>
+            </div>
+            <div class="form-container">
+                <form action="https://formspree.io/f/YOUR_ID" method="POST">
+                    <input type="text" name="name" placeholder="שם מלא" required>
+                    <input type="tel" name="phone" placeholder="טלפון לחזרה" required>
+                    <textarea name="idea" placeholder="מה הרעיון שלך לקעקוע?" rows="4"></textarea>
+                    <button type="submit" class="btn btn-fill-red" style="width:100%;">אני רוצה לקבוע ייעוץ</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <iframe style="width: 100%; height: 400px; border: none; filter: grayscale(1) invert(0.9);" src="https://maps.google.com/maps?q=הירדן%202%20אריאל&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+
+    <div class="sticky-whatsapp">
+        <a href="https://api.whatsapp.com/send?phone=9720537239660">דברו איתי ב-WhatsApp 💬</a>
+    </div>
+
 </body>
 </html>
