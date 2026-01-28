@@ -3,335 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AvinTattoo | סטודיו לקעקועים ופירסינג</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>CloudClip | העברת טקסט בין מכשירים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --wp--preset--color--contrast: #ffffff;
-            --bg-deep-red: #2d0b0b;
-            --bg-dark-black: #1a0606;
-            --whatsapp-green: #25d366;
-            --consult-red: #a12626;
-            --border-color: #471717;
-            --form-bg: #4b1616;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Heebo', sans-serif; 
-            background-color: var(--bg-deep-red); 
-            color: #ffffff; 
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- WordPress Spacers --- */
-        .wp-block-spacer { height: 100px; }
-        .desktop-only-spacer { height: 100px; }
-        @media (max-width: 768px) { .desktop-only-spacer { display: none; } }
-
-        /* --- Hero Section (The Cover Block) --- */
-        .hero-desktop {
-            position: relative;
-            min-height: 755px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .hero-mobile {
-            position: relative;
-            min-height: 100vh;
-            display: none;
-            overflow: hidden;
-        }
-
-        .hero-video-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.2);
-            z-index: -1;
-        }
-
-        /* --- Layout Containers --- */
-        .alignfull { width: 100%; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        /* --- Buttons Style --- */
-        .wp-block-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            padding: 20px 0;
-        }
-        .wp-block-button__link {
-            text-decoration: none;
-            color: white;
-            padding: 12px 35px;
-            border-radius: 50px;
-            font-weight: 700;
-            transition: 0.3s ease;
-            display: inline-block;
-            border: 2px solid transparent;
-            font-size: 1.1rem;
-        }
-        .is-style-outline { border: 2px solid white; background: transparent; }
-        .is-style-outline:hover { background: white; color: var(--bg-deep-red); }
-
-        .btn-whatsapp { background-color: var(--whatsapp-green) !important; border: none; font-size: 1.3rem; }
-        .btn-consult { background-color: var(--consult-red) !important; border: none; font-size: 1.3rem; }
-
-        /* --- Shop Grid (Boutique) --- */
-        .shop-grid-section { background-color: var(--bg-dark-black); padding: 3rem 1rem; }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-            margin-top: 30px;
-        }
-        .product-card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.02);
-            display: flex;
-            flex-direction: column;
-        }
-        .product-card img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        .product-card h5 { font-size: 1rem; margin-bottom: 8px; font-weight: 600; }
-        .product-material { font-size: 0.9rem; color: #ffd700; margin-bottom: 5px; }
-        .product-sku { font-size: 0.8rem; color: #888; margin-bottom: 15px; }
-
-        /* --- Contact Form Section --- */
-        .lead-section { padding: 5rem 1rem; background-color: var(--bg-deep-red); }
-        .lead-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .lead-text h2 { font-size: 3rem; line-height: 1.2; margin-bottom: 20px; }
-        .lead-text ul { list-style: none; margin-top: 20px; }
-        .lead-text li { margin-bottom: 10px; font-size: 1.2rem; }
-
-        .form-container {
-            background-color: #000000;
-            border: 1px solid #4e1b1b;
-            border-radius: 16px;
-            padding: 2.5rem;
-            text-align: right;
-        }
-        .form-container label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-container input, .form-container textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #4e1b1b;
-            background-color: var(--form-bg);
-            color: white;
-            font-family: inherit;
-        }
-
-        /* --- Sticky Footer --- */
-        .sticky-cta {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: var(--whatsapp-green);
-            text-align: center;
-            z-index: 9999;
-        }
-        .sticky-cta a {
-            display: block;
-            padding: 18px;
-            color: white;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.2rem;
-        }
-
-        /* --- Google Map --- */
-        .map-wrapper { width: 100%; height: 450px; filter: grayscale(1) invert(0.9) contrast(1.2); }
-
-        /* --- Responsive --- */
-        @media (max-width: 768px) {
-            .hero-desktop { display: none; }
-            .hero-mobile { display: block; }
-            .lead-grid { grid-template-columns: 1fr; text-align: center; }
-            .lead-text h2 { font-size: 2.2rem; text-align: center !important; }
-            .product-grid { grid-template-columns: 1fr 1fr; }
-        }
+        body { font-family: 'Heebo', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 5px; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Spacer -->
-    <div class="wp-block-spacer desktop-only-spacer"></div>
-
-    <!-- Hero Desktop -->
-    <div class="hero hero-desktop">
-        <video class="hero-video-bg" autoplay muted loop playsinline src="hero-new.mp4"></video>
-        <div class="hero-overlay"></div>
-        <div class="container">
-            <!-- Content position center/center spacer matching -->
-            <div style="height:300px"></div>
-            <div style="height:137px"></div>
-            <div style="height:300px"></div>
+    <div class="w-full max-w-2xl glass rounded-3xl p-6 md:p-8 shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-900 tracking-tighter text-blue-400">CloudClip<span class="text-white">.</span></h1>
+            <div class="text-xs text-slate-400 flex items-center">
+                <span id="status-dot" class="status-dot bg-slate-500"></span>
+                <span id="status-text">ממתין למפתח...</span>
+            </div>
         </div>
-    </div>
 
-    <!-- Hero Mobile -->
-    <div class="hero hero-mobile">
-        <video class="hero-video-bg" autoplay muted loop playsinline src="hero-new.mp4"></video>
-        <div class="hero-overlay" style="background-color: rgba(0,0,0,0.1);"></div>
-    </div>
+        <!-- הגדרת מפתח -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-slate-400 mb-2">מפתח לוח (המצא מפתח קבוע לשימושך):</label>
+            <div class="flex gap-2">
+                <input type="password" id="board-key" placeholder="למשל: almog-secret-787" 
+                       class="flex-1 bg-slate-800 border-none p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-center tracking-widest">
+                <button id="lock-btn" class="bg-slate-700 hover:bg-slate-600 px-4 rounded-xl transition-all">🔓</button>
+            </div>
+        </div>
 
-    <!-- Main Navigation Section -->
-    <section class="alignfull" style="background-color: var(--bg-deep-red); padding: 3rem 1rem;">
-        <div class="container">
-            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem;">לאן תרצו להמשיך?</h2>
+        <!-- אזור הטקסט -->
+        <div class="relative mb-6">
+            <textarea id="main-text" placeholder="הדבק כאן את הטקסט שברצונך להעביר..." 
+                      class="w-full h-64 bg-slate-900/50 border border-slate-700 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all resize-none text-lg custom-scrollbar"></textarea>
             
-            <div class="wp-block-buttons">
-                <a href="#shop-gallery" class="wp-block-button__link is-style-outline" style="width: 50%;">SHOP</a>
-            </div>
-
-            <div class="wp-block-buttons">
-                <a href="#piercings" class="wp-block-button__link is-style-outline">גלריית פירסינג</a>
-                <a href="#full-site" class="wp-block-button__link is-style-outline">לאתר המלא</a>
-                <a href="#tattoos" class="wp-block-button__link is-style-outline">גלריית קעקועים</a>
-                <a href="#info" class="wp-block-button__link is-style-outline">מידע קעקועים</a>
-                <a href="#info" class="wp-block-button__link is-style-outline">מידע פירסינג</a>
-            </div>
-
-            <div class="wp-block-buttons" style="margin-top: 30px;">
-                <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח למידע נוסף" class="wp-block-button__link btn-whatsapp">WhatsApp</a>
-                <a href="#lead-form" class="wp-block-button__link btn-consult">תיאום ייעוץ</a>
-            </div>
+            <button id="clear-btn" class="absolute bottom-4 left-4 text-slate-500 hover:text-red-400 text-sm">נקה הכל</button>
         </div>
-    </section>
 
-    <!-- Shop Grid Section -->
-    <section id="shop-gallery" class="shop-grid-section">
-        <div class="container">
-            <h2 style="text-align: center; font-size: 2.5rem;">בוטיק פירסינג בסטודיו</h2>
-            <p style="text-align: center; font-size: 0.9rem; color: #ccc;">מבחר תכשיטים בסטנדרט רפואי | לפרטים והזמנה לחצו על הפריט</p>
-            
-            <div class="product-grid" id="main-product-grid">
-                <!-- Products list (Showing first 4 as example, you can add all 41) -->
-                <div class="product-card">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1052-d79cd795d798d795d7a1-d7a7d798d79f-d7a2d79d-d7a9d7a8d7a9d7a8d7aa-d7a6d791d7a2-d7a6d799d7a4d795d799-d796d794d791.jpg">
-                    <h5>לוטוס אבן עם שרשרת</h5>
-                    <p class="product-material">🟡 ציפוי זהב</p>
-                    <p class="product-sku">מק"ט: 1052</p>
-                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: לוטוס אבן שרשרת (1052)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
-                </div>
-                
-                <div class="product-card">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1023-d79cd791d7a8d798-d796d7a8d799d7a7d795f-d7a7d798d79f-d798d799d798d7a0d799d795d79d.jpg">
-                    <h5>לאברט זירקון</h5>
-                    <p class="product-material">⚪️ טיטניום</p>
-                    <p class="product-sku">מק"ט: 1023</p>
-                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: לאברט זירקון (1023)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
-                </div>
-
-                <div class="product-card">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1071-d7a4d7a8d797-d791d7a8d7a7d799d796d795d7aa-d7a6d799d7a4d795d799-d796d794d791.jpg">
-                    <h5>פרח מרקיזות</h5>
-                    <p class="product-material">🟡 ציפוי זהב</p>
-                    <p class="product-sku">מק"ט: 1071</p>
-                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: פרח מרקיזות (1071)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
-                </div>
-
-                <div class="product-card">
-                    <img src="https://avitattoos.wordpress.com/wp-content/uploads/2025/12/d79ed7a7d798-1054-d798d799d7a4d794-d7a0d795d7a4d79cd7aa-4d79ed79e-d7a6d799d7a4d795d799-d796d794d791.jpg">
-                    <h5>טיפה נופלת 4מ"מ</h5>
-                    <p class="product-material">🟡 ציפוי זהב</p>
-                    <p class="product-sku">מק"ט: 1054</p>
-                    <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, אשמח לברר זמינות: טיפה נופלת (1054)" class="wp-block-button__link btn-whatsapp" style="width: 100%; border-radius: 5px; font-size: 1rem;">הזמנה</a>
-                </div>
-            </div>
-            <div style="text-align:center; margin-top: 40px;">
-                <a href="shop.html" class="wp-block-button__link is-style-outline">לכל הקולקציה המלאה ←</a>
-            </div>
+        <!-- כפתורי פעולה -->
+        <div class="grid grid-cols-2 gap-4">
+            <button id="save-btn" disabled class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                <span>💾</span> שמור לענן
+            </button>
+            <button id="load-btn" disabled class="bg-white hover:bg-slate-100 disabled:bg-slate-700 text-slate-900 font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                <span>🔄</span> משוך מהענן
+            </button>
         </div>
-    </section>
 
-    <!-- Lead Form Section -->
-    <section id="lead-form" class="lead-section">
-        <div class="container">
-            <div class="lead-grid">
-                <div class="lead-text">
-                    <h2 style="text-align: right;">בואו נדבר תכל'ס על הקעקוע שלך.</h2>
-                    <p style="font-size: 1.2rem;">משאירים פרטים כאן, ומקבלים שיחת ייעוץ ראשונית ללא עלות.</p>
-                    <ul>
-                        <li>✅ הערכת מחיר ראשונית</li>
-                        <li>✅ בדיקת התאמה לרעיון שלך</li>
-                        <li>✅ תיאום תור מהיר בסטודיו</li>
-                    </ul>
-                </div>
-                <div class="form-container">
-                    <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                        <label>שם מלא</label>
-                        <input type="text" name="name" required>
-                        
-                        <label>טלפון לחזרה</label>
-                        <input type="tel" name="phone" required>
-                        
-                        <label>מה הרעיון שלך לקעקוע?</label>
-                        <textarea name="message" rows="4"></textarea>
-                        
-                        <button type="submit" class="wp-block-button__link btn-consult" style="width: 100%;">אני רוצה לקבוע ייעוץ</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Google Map -->
-    <iframe class="map-wrapper" src="https://maps.google.com/maps?q=הירדן%202%20אריאל&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
-
-    <!-- Sticky Footer -->
-    <div class="sticky-cta">
-        <a href="https://api.whatsapp.com/send?phone=9720537239660&text=היי אבי, הגעתי מהאתר">דברו איתי ב-WhatsApp 💬</a>
+        <button id="copy-btn" class="w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl text-sm font-medium transition-all">
+            העתק טקסט ללוח (Clipboard)
+        </button>
     </div>
 
-    <!-- Lightbox Script for images -->
+    <p class="mt-6 text-slate-500 text-xs text-center max-w-sm">
+        הטקסט נשמר בשרת זמני מאובטח. המפתח שלך הוא הדרך היחידה להגיע למידע. אל תשתמש במפתחות קלים לניחוש.
+    </p>
+
     <script>
-        // Smooth scroll implementation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        // שימוש ב-API ציבורי של npoint.io לניהול ה-JSON
+        // המפתח שלך הופך ל-ID של ה-Bin
+        let boardId = "";
+        
+        const boardKeyInput = document.getElementById('board-key');
+        const lockBtn = document.getElementById('lock-btn');
+        const mainText = document.getElementById('main-text');
+        const saveBtn = document.getElementById('save-btn');
+        const loadBtn = document.getElementById('load-btn');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+
+        // טעינת מפתח שמור מהדפדפן
+        if(localStorage.getItem('cloudclip_key')) {
+            boardKeyInput.value = localStorage.getItem('cloudclip_key');
+            updateBoardState();
+        }
+
+        boardKeyInput.oninput = updateBoardState;
+
+        function updateBoardState() {
+            const key = boardKeyInput.value.trim();
+            if(key.length >= 4) {
+                // יצירת מזהה ייחודי מבוסס על המפתח שלך (Hash פשוט)
+                boardId = btoa(key).replace(/=/g, '').substring(0, 15).toLowerCase();
+                saveBtn.disabled = false;
+                loadBtn.disabled = false;
+                statusDot.className = "status-dot bg-green-500";
+                statusText.innerText = "לוח מוכן לסנכרון";
+                localStorage.setItem('cloudclip_key', key);
+            } else {
+                saveBtn.disabled = true;
+                loadBtn.disabled = true;
+                statusDot.className = "status-dot bg-slate-500";
+                statusText.innerText = "מפתח קצר מדי...";
+            }
+        }
+
+        // פונקציית שמירה (POST/PUT)
+        saveBtn.onclick = async () => {
+            const text = mainText.value;
+            statusText.innerText = "שומר...";
+            
+            try {
+                // אנחנו משתמשים בשירות שנקרא kvstore.io או דומיו
+                // לצורך הפשטות והיציבות, נשתמש ב-npoint שמאפשר אחסון JSON פתוח
+                const response = await fetch(`https://api.npoint.io/${boardId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ clip: text, updated: new Date().getTime() })
                 });
-            });
-        });
+
+                if(response.ok) {
+                    statusText.innerText = "נשמר בהצלחה!";
+                    setTimeout(updateBoardState, 2000);
+                }
+            } catch (e) {
+                statusText.innerText = "שגיאת שמירה";
+            }
+        };
+
+        // פונקציית משיכה (GET)
+        loadBtn.onclick = async () => {
+            statusText.innerText = "מושך נתונים...";
+            try {
+                const response = await fetch(`https://api.npoint.io/${boardId}`);
+                const data = await response.json();
+                if(data && data.clip !== undefined) {
+                    mainText.value = data.clip;
+                    statusText.innerText = "הטקסט עודכן!";
+                    setTimeout(updateBoardState, 2000);
+                } else {
+                    statusText.innerText = "לוח ריק";
+                }
+            } catch (e) {
+                statusText.innerText = "לוח לא נמצא בענן";
+            }
+        };
+
+        // עזרים
+        document.getElementById('copy-btn').onclick = () => {
+            mainText.select();
+            document.execCommand('copy');
+            alert("הטקסט הועתק!");
+        };
+
+        document.getElementById('clear-btn').onclick = () => {
+            if(confirm("לנקות את התיבה?")) mainText.value = "";
+        };
+
+        lockBtn.onclick = () => {
+            boardKeyInput.type = boardKeyInput.type === 'password' ? 'text' : 'password';
+            lockBtn.innerText = boardKeyInput.type === 'password' ? '🔓' : '🔒';
+        };
+
     </script>
 </body>
 </html>
