@@ -4,79 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מרכז המידע | Avintattoo</title>
+    
+    <!-- Favicon חכם: אייקון יהלום מוזהב בשורת הכתובות -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg: #ffffff; --text: #111; --gold: #d4af37; --transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .reveal { opacity: 0; transform: translateY(20px); transition: var(--transition); }
+        /* --- משתנים ועיצוב גלובלי (זהה לדף הבית) --- */
+        :root {
+            --bg-body: #ffffff;
+            --bg-section: #f9f9f9;
+            --bg-card: #ffffff;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --gold: #d4af37;
+            --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f7ef8a 50%, #d4af37 100%);
+            --border-color: #e0e0e0;
+            --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
+            --transition: 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* מנגנון Reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition); }
         .reveal.visible { opacity: 1; transform: translateY(0); }
-        .page-transition { position: fixed; inset: 0; background: #000; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
-        body.is-exiting .page-transition { opacity: 1; pointer-events: all; }
-        
+
+        /* Page Transition */
+        body { opacity: 0; transition: opacity 0.6s ease-in-out; }
+        body.page-loaded { opacity: 1; }
+        body.is-exiting { opacity: 0; }
+
+        /* נגישות */
+        body.a11y-contrast { --bg-body: #000; --bg-section: #222; --text-main: #fff; --gold: #ffff00; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; opacity: 0; transition: opacity 0.8s; }
-        body.loaded { opacity: 1; }
+        body { font-family: 'Heebo', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.8; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
 
-        header { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(255,255,255,0.9); padding: 0.8rem 5%; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(15px); border-bottom: 1px solid #eee; }
-        .logo-svg { width: 150px; }
+        /* --- Header --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95); padding: 0.8rem 5%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(15px);
+        }
 
-        .hero-mini { height: 45vh; background: url('https://avitattoos.wordpress.com/wp-content/uploads/2025/07/1000068900.png?w=559') center/cover; position: relative; display: flex; align-items: center; justify-content: center; color: #fff; text-align: center; }
-        .hero-mini::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-        .hero-content { z-index: 1; }
+        .logo-svg { width: 160px; height: auto; cursor: pointer; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: 4rem 20px; }
-        .info-card { background: #f9f9f9; padding: 2.5rem; border-radius: 20px; border-right: 5px solid var(--gold); margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
-        .info-card h2 { font-weight: 900; margin-bottom: 15px; }
+        .btn-back { font-weight: 700; color: #111; font-size: 0.9rem; padding: 8px 20px; border: 1px solid #111; border-radius: 50px; }
+        .btn-back:hover { background: #111; color: #fff; }
 
-        .btn-cta { background: var(--gold); color: #000; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 30px; transition: 0.3s; }
-        .btn-cta:hover { transform: scale(1.05); background: #000; color: #fff; }
+        /* --- Hero Section --- */
+        .page-hero {
+            position: relative; height: 50vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; background: url('https://avitattoos.wordpress.com/wp-content/uploads/2025/07/1000068900.png?w=559') center/cover; color: #fff;
+        }
+        .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-        @media (max-width: 768px) { .logo-svg { width: 120px; } .hero-mini { height: 35vh; } }
+        /* --- Table of Contents (TOC) --- */
+        .toc-container {
+            background: #fff; max-width: 850px; margin: -40px auto 50px;
+            padding: 2rem; border-radius: 15px; box-shadow: var(--shadow-card);
+            position: relative; z-index: 10; border-top: 4px solid var(--gold);
+            text-align: center;
+        }
+        .toc-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .toc-btn { background: var(--bg-section); padding: 10px 25px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; border: 1px solid var(--border-color); }
+        .toc-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); transform: translateY(-2px); }
+
+        /* --- Content Layout --- */
+        .container { max-width: 850px; margin: 0 auto; padding: 0 20px 6rem; }
+        
+        .info-section { margin-bottom: 5rem; scroll-margin-top: 120px; }
+        
+        .section-header { margin-bottom: 20px; border-right: 5px solid var(--gold); padding-right: 15px; }
+        .section-header h2 { font-size: 2.2rem; font-weight: 900; }
+        .section-header span { color: var(--gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+
+        .info-card {
+            background: var(--bg-section); padding: 2.5rem; border-radius: 20px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .info-list li { margin-bottom: 1.5rem; position: relative; padding-right: 35px; }
+        .info-list li::before { content: '✦'; position: absolute; right: 0; color: var(--gold); font-size: 1.2rem; }
+        .info-list strong { color: #000; font-weight: 800; display: block; font-size: 1.1rem; }
+        .info-list p { color: var(--text-muted); margin-top: 5px; }
+
+        /* Golden Rules Box */
+        .aftercare-box {
+            background: #fff; border: 2px solid var(--gold); padding: 2rem; border-radius: 15px;
+            margin-top: 30px; text-align: center;
+        }
+        .aftercare-box h4 { margin-bottom: 15px; font-weight: 900; color: #000; }
+        .aftercare-box ul { display: inline-block; text-align: right; }
+        .aftercare-box li { margin-bottom: 10px; font-weight: 500; }
+
+        /* CTA */
+        .cta-footer {
+            background: #111; color: #fff; padding: 4rem 2rem; border-radius: 25px;
+            text-align: center; margin-top: 4rem;
+        }
+        .cta-footer h2 { font-size: 2rem; margin-bottom: 15px; }
+        .btn-gold { background: var(--gold-gradient); color: #000; padding: 15px 40px; border-radius: 50px; font-weight: 900; display: inline-block; margin-top: 20px; }
+        .btn-gold:hover { transform: scale(1.05); }
+
+        /* Footer */
+        footer { padding: 3rem; text-align: center; color: #888; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .logo-svg { width: 130px; }
+            .container { padding: 0 20px 4rem; }
+            .info-card { padding: 1.5rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="page-transition"></div>
+
     <header>
         <a href="index.html" class="transition-link">
-            <svg class="logo-svg" viewBox="0 0 300 60"><text x="0" y="45" font-family="Heebo" font-weight="900" font-size="42" fill="#d4af37">AVIN</text><text x="105" y="45" font-family="Heebo" font-weight="300" font-size="42" fill="#111">TATTOO</text></svg>
+            <svg class="logo-svg" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#d4af37" />
+                        <stop offset="50%" style="stop-color:#f7ef8a" />
+                        <stop offset="100%" style="stop-color:#d4af37" />
+                    </linearGradient>
+                </defs>
+                <text x="0" y="45" font-family="Heebo" font-weight="900" font-size="42" fill="url(#goldGrad)">AVIN</text>
+                <text x="105" y="45" font-family="Heebo" font-weight="300" font-size="42" fill="#111">TATTOO</text>
+            </svg>
         </a>
-        <a href="index.html" class="transition-link" style="text-decoration:none; font-weight:700; color:#000;">&larr; חזרה</a>
+        <a href="index.html" class="btn-back transition-link">חזרה לבית</a>
     </header>
 
-    <section class="hero-mini">
+    <section class="page-hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 style="font-size:3rem; font-weight:900;">מרכז המידע</h1>
-            <p>כל מה שצריך לדעת על הקעקוע שלך</p>
+            <h1>מרכז המידע לקעקועים</h1>
+            <p>המדריך המלא לסקיצה, לביצוע ולריפוי המושלם</p>
         </div>
     </section>
 
-    <div class="container">
-        <div class="info-card reveal">
-            <h2>הכנה לקעקוע</h2>
-            <p>הכנה נכונה תורמת לריפוי טוב יותר. הקפידו לשתות הרבה מים ב-48 השעות לפני, לאכול ארוחה מזינה, ולהימנע מאלכוהול לפחות 24 שעות לפני התור. גוף רגוע ורווי סוכר מתמודד טוב יותר עם הכאב.</p>
-        </div>
-        
-        <div class="info-card reveal">
-            <h2>טיפול Aftercare</h2>
-            <p>העבודה שלי מסתיימת כשהמחט יוצאת מהעור, העבודה שלכם רק מתחילה. שטפו את הקעקוע 2-3 פעמים ביום במים פושרים וסבון עדין, ומרחו שכבה דקה מאוד של משחה ייעודית. אל תגרדו ואל תקלפו את הגלד.</p>
-        </div>
-
-        <div class="info-card reveal">
-            <h2>שמירה לטווח ארוך</h2>
-            <p>האויב הגדול ביותר של הקעקוע הוא השמש. הקפידו על קרם הגנה (SPF 50) בכל פעם שאתם נחשפים לשמש, גם שנים אחרי שהקעקוע החלים, כדי לשמור על הצבעים חדים וברורים.</p>
-        </div>
-
-        <div style="text-align:center;">
-            <a href="index.html#contact" class="btn-cta transition-link">תיאום פגישת ייעוץ חינם</a>
+    <div class="toc-container reveal">
+        <div class="toc-title">נושאי המדריך</div>
+        <div class="toc-links">
+            <a href="#prepare" class="toc-btn">הכנה לקעקוע</a>
+            <a href="#aftercare" class="toc-btn">טיפול Aftercare</a>
+            <a href="#longterm" class="toc-btn">שמירה לטווח ארוך</a>
         </div>
     </div>
 
-    <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    <div class="container">
 
+        <!-- Preparation -->
+        <section id="prepare" class="info-section">
+            <div class="section-header reveal">
+                <span>Phase 01</span>
+                <h2>הכנה לקראת יום הקעקוע</h2>
+            </div>
+            <div class="info-card reveal">
+                <p style="margin-bottom: 25px; font-weight: 500;">ההכנה שלכם מתחילה עוד לפני שנכנסתם לסטודיו. הכנה נכונה תורמת לריפוי טוב יותר ולחוויה נעימה יותר.</p>
+                <ul class="info-list">
+                    <li>
+                        <strong>שתו הרבה מים</strong>
+                        <p>ב-24-48 השעות שלפני, הקפידו על שתיית מים מרובה. עור רווי לחות מקבל את הדיו בצורה חלקה ומהירה יותר.</p>
+                    </li>
+                    <li>
+                        <strong>הימנעו מאלכוהול</strong>
+                        <p>לפחות 24 שעות לפני התור, הימנעו מאלכוהול. אלכוהול מדלל את הדם ועלול לגרום לדימום יתר שפוגע בקליטת הדיו.</p>
+                    </li>
+                    <li>
+                        <strong>אכלו ארוחה טובה</strong>
+                        <p>אל תגיעו על בטן ריקה! ארוחה מזינה שעה-שעתיים לפני הפגישה תשמור על רמת סוכר יציבה ותעזור לגוף להתמודד עם הכאב.</p>
+                    </li>
+                    <li>
+                        <strong>שנו טוב בלילה שלפני</strong>
+                        <p>גוף עייף רגיש יותר לכאב. שינה טובה תכין אתכם פיזית ונפשית לתהליך.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Aftercare -->
+        <section id="aftercare" class="info-section">
+            <div class="section-header reveal">
+                <span>Phase 02</span>
+                <h2>טיפול לאחר הקעקוע</h2>
+            </div>
+            <div class="info-card reveal">
+                <p>העבודה שלי מסתיימת כשהמחט יוצאת מהעור, העבודה שלכם רק מתחילה. טיפול נכון בשבועות הראשונים הוא הסוד לקעקוע שנראה מדהים לאורך שנים.</p>
+                
+                <div class="aftercare-box">
+                    <h4>כללי הזהב לטיפול</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🧴 <strong>ניקיון:</strong> שטפו את האזור 2-3 פעמים ביום במים פושרים וסבון עדין.</li>
+                        <li>💧 <strong>לחות:</strong> מרחו שכבה דקה מאוד של משחה ייעודית (כמו בפנטן פלוס).</li>
+                        <li>🚫 <strong>איסורים:</strong> אסור לגרד, לקלף, או להשרות במים (ים, בריכה, אמבטיה) למשך שבועיים.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Long Term -->
+        <section id="longterm" class="info-section">
+            <div class="section-header reveal">
+                <span>Phase 03</span>
+                <h2>שמירה לטווח ארוך</h2>
+            </div>
+            <div class="info-card reveal">
+                <p style="margin-bottom: 20px;">קעקוע הוא השקעה לכל החיים. הנה איך לשמור עליו חד וברור גם בעוד 20 שנה:</p>
+                <ul class="info-list">
+                    <li>
+                        <strong>הגנה מהשמש ☀️</strong>
+                        <p>קרינת UV היא האויב מספר 1 של הדיו. השתמשו בקרם הגנה (SPF 50) בכל חשיפה לשמש כדי למנוע דהייה.</p>
+                    </li>
+                    <li>
+                        <strong>שמירה על לחות העור</strong>
+                        <p>עור בריא וגמיש שומר על הדיו בצורה טובה יותר. שימוש בקרם גוף איכותי באופן קבוע ישמור על חדות הקווים.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-footer reveal">
+            <h2>מוכנים להתחיל את הפרויקט הבא?</h2>
+            <p>הייעוץ והסקיצה הראשונית הם ללא עלות וללא התחייבות.</p>
+            <a href="index.html#contact" class="btn-gold transition-link">תיאום פגישת ייעוץ</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Avintattoo | סטודיו לקעקועים ופירסינג באריאל</p>
+    </footer>
+
+    <script>
+        // --- 1. Reveal on Scroll Logic ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        // --- 2. Page Transitions & Init ---
+        window.onload = () => {
+            document.body.classList.add('page-loaded');
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        };
+
+        // --- 3. Transition logic for links ---
         document.querySelectorAll('.transition-link').forEach(link => {
             link.onclick = (e) => {
                 e.preventDefault();
@@ -84,7 +265,6 @@
                 setTimeout(() => window.location.href = link.href, 400);
             };
         });
-        window.onload = () => document.body.classList.add('loaded');
     </script>
 </body>
 </html>
