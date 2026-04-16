@@ -1,0 +1,13 @@
+title: Avi Tattoos & Piercing
+description: בוטיק קעקועים ופירסינג מקצועי - קולקציית תכשיטים ייחודית
+baseurl: "" 
+url: "https://your-username.github.io"
+
+# הגדרות Google Sheets לקטלוג (נשתמש בזה בחלק 3)
+google_sheet_id: "YOUR_SHEET_ID"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+exclude: [node_modules, package.json, Tailwind.config.js]
