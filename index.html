@@ -1,35 +1,34 @@
 ---
 layout: default
-title: אבי טאטו - כניסה לעולם האמנות
 ---
-
 <section class="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
-  <div class="absolute inset-0 bg-[url('{{ '/assets/images/hero-bg.jpg' | relative_url }}')] bg-cover bg-center opacity-40"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black"></div>
+  <div class="absolute inset-0 z-0">
+    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-40">
+      <source src="https://path-to-your-video.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+  </div>
 
-  <div class="relative z-10 w-full max-w-5xl px-6 text-center">
-    <h1 class="text-6xl md:text-8xl font-black text-white mb-4 tracking-tighter">AVI TATTOOS</h1>
-    <p class="text-xl md:text-2xl text-gray-300 mb-16 font-light">ART • PIERCING • LIFESTYLE</p>
+  <div class="relative z-10 text-center px-4 max-w-5xl w-full">
+    <h1 class="text-7xl md:text-9xl font-black text-white mb-2 tracking-tighter">AVI TATTOOS</h1>
+    <p class="text-xl text-gold font-light tracking-[0.5em] mb-16 uppercase">Art & Piercing Boutique</p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <a href="{{ '/home/' | relative_url }}" class="group bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white hover:text-black transition-all duration-500">
-        <h3 class="text-2xl font-bold mb-2">האתר המלא</h3>
-        <p class="text-sm opacity-70 group-hover:opacity-100">גלריות, המלצות ומידע</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a href="{{ '/home/' | relative_url }}" class="glass p-8 rounded-3xl hover:bg-white hover:text-black transition duration-500 group">
+        <h3 class="text-2xl font-bold mb-2 text-white group-hover:text-black">האתר המלא</h3>
+        <p class="text-sm opacity-60">הסטודיו, גלריות ומידע</p>
       </a>
-
-      <a href="{{ '/catalog/' | relative_url }}" class="group bg-gold/20 backdrop-blur-md border border-gold/40 p-8 rounded-3xl hover:bg-gold hover:text-black transition-all duration-500">
-        <h3 class="text-2xl font-bold mb-2 text-gold group-hover:text-black">קטלוג פירסינג</h3>
-        <p class="text-sm opacity-70 group-hover:opacity-100">בוטיק תכשיטי יוקרה</p>
+      <a href="{{ '/catalog/' | relative_url }}" class="glass p-8 rounded-3xl border-gold/30 hover:bg-gold hover:text-black transition duration-500 group">
+        <h3 class="text-2xl font-bold mb-2 text-gold group-hover:text-black">קטלוג</h3>
+        <p class="text-sm opacity-60">תכשיטי יוקרה ופירסינג</p>
       </a>
-
-      <a href="{{ '/blog-tattoos/' | relative_url }}" class="group bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white hover:text-black transition-all duration-500">
-        <h3 class="text-2xl font-bold mb-2">בלוג קעקועים</h3>
-        <p class="text-sm opacity-70 group-hover:opacity-100">טיפול נכון והשראה</p>
+      <a href="{{ '/blog/tattoos/' | relative_url }}" class="glass p-8 rounded-3xl hover:bg-white hover:text-black transition duration-500 group">
+        <h3 class="text-2xl font-bold mb-2 text-white group-hover:text-black">בלוג קעקועים</h3>
+        <p class="text-sm opacity-60">השראה וטיפול נכון</p>
       </a>
-
-      <a href="{{ '/blog-piercing/' | relative_url }}" class="group bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white hover:text-black transition-all duration-500">
-        <h3 class="text-2xl font-bold mb-2">בלוג פירסינג</h3>
-        <p class="text-sm opacity-70 group-hover:opacity-100">כל מה שחשוב לדעת</p>
+      <a href="{{ '/blog/piercing/' | relative_url }}" class="glass p-8 rounded-3xl hover:bg-white hover:text-black transition duration-500 group">
+        <h3 class="text-2xl font-bold mb-2 text-white group-hover:text-black">בלוג פירסינג</h3>
+        <p class="text-sm opacity-60">כל מה שצריך לדעת</p>
       </a>
     </div>
   </div>
